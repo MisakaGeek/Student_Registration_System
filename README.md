@@ -1,0 +1,4 @@
+# Student_Registration_System
+学生选课管理系统
+
+吉林大学2017级软件工程课程设计代码
