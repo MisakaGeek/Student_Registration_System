@@ -16,10 +16,12 @@ import java.sql.Statement;
 
 
 public class Register {
+
 	private Connection conn=null;
 	private PreparedStatement pst=null;
 	private ResultSet rs=null;
 	private Statement stmt=null;
+
 	
 	Socket socket;
     DataInputStream dis;
@@ -33,6 +35,7 @@ public class Register {
 			this.dos = new DataOutputStream(
 	                new BufferedOutputStream(socket.getOutputStream()));//输出流
 			this.conn = Database.getNewConnection();
+			
 		} catch (IOException | SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -44,11 +47,17 @@ public class Register {
 	public String login(String id,String pw) {
 		try {
 			conn = Database.getNewConnection();
+			pst=null;
+			rs=null;
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return "1";
+	}
+	public String open_Registration() {
+		SRSServer.isRegistration_time=1;
+		return "true";
 	}
 	public void close_Registration() {
 		
@@ -61,7 +70,7 @@ public class Register {
 	}
 	public void close() {
 		try {
-			if(rs!=null)
+  if(rs!=null)
 				rs.close();
 			if(pst!=null)
 				pst.close();
@@ -69,6 +78,7 @@ public class Register {
 				stmt.close();
 			if(conn!=null)
 				conn.close();
+
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();

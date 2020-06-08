@@ -5,11 +5,29 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
 import java.net.Socket;
+import java.net.URL;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
+import java.sql.Ref;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.RowId;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class Professor {
 	String id;
@@ -39,20 +57,23 @@ public class Professor {
 			this.dis = new DataInputStream(
 			        new BufferedInputStream(socket.getInputStream()));
 			this.dos = new DataOutputStream(
-	                new BufferedOutputStream(socket.getOutputStream()));//Êä³öÁ÷
+	                new BufferedOutputStream(socket.getOutputStream()));//è¾“å‡ºæµ
 			conn = Database.getNewConnection();
+			pst=null;
+			rs=null;
+		
 		} catch (SQLException | IOException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}
 	public String login(String id,String pw) throws SQLException {
 		/*
-		 * µ±·şÎñÆ÷½ÓÊÕµ½½ÌÊÚ¿Í»§¶Ë·¢À´µÄµÇÂ¼ÇëÇóºó£¬´´½¨½ÌÊÚ¶ÔÏó²¢Ö´ĞĞ´Ë·½·¨
-		 * 1.·ÃÎÊÊı¾İ¿â£¬¶ÔidÓëpw½øĞĞ¼ìË÷£¬Èô¼ìË÷²»µ½»ò²»Æ¥Åä£¬±¨´í£¬·µ»Ø0
-		 * 2.ÈôÆ¥Åä£¬Ôò¼ìË÷Êı¾İ¿â¸Ã½ÌÊÚµÄĞÅÏ¢£¬´æ·Åµ½±¾¶ÔÏóÖĞ£¬²¢·µ»Ø1±íÊ¾µÇÂ¼³É¹¦¡£
+		 * å½“æœåŠ¡å™¨æ¥æ”¶åˆ°æ•™æˆå®¢æˆ·ç«¯å‘æ¥çš„ç™»å½•è¯·æ±‚åï¼Œåˆ›å»ºæ•™æˆå¯¹è±¡å¹¶æ‰§è¡Œæ­¤æ–¹æ³•
+		 * 1.è®¿é—®æ•°æ®åº“ï¼Œå¯¹idä¸pwè¿›è¡Œæ£€ç´¢ï¼Œè‹¥æ£€ç´¢ä¸åˆ°æˆ–ä¸åŒ¹é…ï¼ŒæŠ¥é”™ï¼Œè¿”å›0
+		 * 2.è‹¥åŒ¹é…ï¼Œåˆ™æ£€ç´¢æ•°æ®åº“è¯¥æ•™æˆçš„ä¿¡æ¯ï¼Œå­˜æ”¾åˆ°æœ¬å¯¹è±¡ä¸­ï¼Œå¹¶è¿”å›1è¡¨ç¤ºç™»å½•æˆåŠŸã€‚
 		 */
-		//²¹³ä£º¶ÔÊı¾İ¿â½øĞĞ¼ìË÷
+		//è¡¥å……ï¼šå¯¹æ•°æ®åº“è¿›è¡Œæ£€ç´¢
 		
 		String sql;
 		sql = "select pid,password from professor where pid=?";
@@ -74,11 +95,11 @@ public class Professor {
 	
 	public void close() {
 		try {
-			rs.close();
-			pst.close();
+			if(rs!=null) {rs.close();}
+			if(pst!=null) {pst.close();}
 			conn.close();
 		} catch (SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}

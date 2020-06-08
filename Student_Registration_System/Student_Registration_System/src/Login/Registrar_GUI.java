@@ -19,6 +19,7 @@ import java.net.Socket;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -96,7 +97,22 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==jb1) {  //开启注册按钮
-			//补充：与服务器交互，将服务器的状态改为开放注册的状态
+
+			String res="false";
+			try {
+				dos.writeUTF("3b");
+				dos.flush();
+				res=dis.readUTF();
+			} catch (IOException e1) {
+				// TODO 自动生成的 catch 块
+				e1.printStackTrace();
+			}
+			if(res.contentEquals("true")) {
+				JOptionPane.showMessageDialog(null, "选课系统已经开启！");
+			}else if(res.contentEquals("true")) {
+				JOptionPane.showMessageDialog(null, "选课系统未能成功开启！", "开启失败 ", JOptionPane.ERROR_MESSAGE);
+			}
+			
 		}else if(e.getSource()==jb2){  //关闭注册按钮
 			//补充：执行关闭注册用例的功能，重点编写
 		}else if (e.getSource()==jb3) {  //维护学生信息
@@ -109,6 +125,7 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 			MaintainProfessor mp=new MaintainProfessor(socket);
 			dispose();
 			//同上
+
 		}
 	}
 	
