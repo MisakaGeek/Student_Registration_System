@@ -38,20 +38,20 @@ public class Professor {
 		department = null;
 		try {
 			this.dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-			this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));// Êä³öÁ÷
+			this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));// è¾“å‡ºæµ
 			conn = Database.getNewConnection();
 		} catch (SQLException | IOException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}
 
 	public String login(String id, String pw) throws SQLException {
 		/*
-		 * µ±·şÎñÆ÷½ÓÊÕµ½½ÌÊÚ¿Í»§¶Ë·¢À´µÄµÇÂ¼ÇëÇóºó£¬´´½¨½ÌÊÚ¶ÔÏó²¢Ö´ĞĞ´Ë·½·¨ 1.·ÃÎÊÊı¾İ¿â£¬¶ÔidÓëpw½øĞĞ¼ìË÷£¬Èô¼ìË÷²»µ½»ò²»Æ¥Åä£¬±¨´í£¬·µ»Ø0
-		 * 2.ÈôÆ¥Åä£¬Ôò¼ìË÷Êı¾İ¿â¸Ã½ÌÊÚµÄĞÅÏ¢£¬´æ·Åµ½±¾¶ÔÏóÖĞ£¬²¢·µ»Ø1±íÊ¾µÇÂ¼³É¹¦¡£
+		 * å½“æœåŠ¡å™¨æ¥æ”¶åˆ°æ•™æˆå®¢æˆ·ç«¯å‘æ¥çš„ç™»å½•è¯·æ±‚åï¼Œåˆ›å»ºæ•™æˆå¯¹è±¡å¹¶æ‰§è¡Œæ­¤æ–¹æ³• 1.è®¿é—®æ•°æ®åº“ï¼Œå¯¹idä¸pwè¿›è¡Œæ£€ç´¢ï¼Œè‹¥æ£€ç´¢ä¸åˆ°æˆ–ä¸åŒ¹é…ï¼ŒæŠ¥é”™ï¼Œè¿”å›0
+		 * 2.è‹¥åŒ¹é…ï¼Œåˆ™æ£€ç´¢æ•°æ®åº“è¯¥æ•™æˆçš„ä¿¡æ¯ï¼Œå­˜æ”¾åˆ°æœ¬å¯¹è±¡ä¸­ï¼Œå¹¶è¿”å›1è¡¨ç¤ºç™»å½•æˆåŠŸã€‚
 		 */
-		// ²¹³ä£º¶ÔÊı¾İ¿â½øĞĞ¼ìË÷
+		// è¡¥å……ï¼šå¯¹æ•°æ®åº“è¿›è¡Œæ£€ç´¢
 
 		this.id = id;
 		this.password = pw;
@@ -76,14 +76,13 @@ public class Professor {
 		}
 	}
 
-	public void GetCourse() throws IOException { // »ñÈ¡Ö¸¶¨Ñ§ÆÚµÄ¿Î³Ì
-		System.out.println("GetCourse-------------------------------");
+	public void GetCourse() throws IOException { // è·å–æŒ‡å®šå­¦æœŸçš„è¯¾ç¨‹
 		String semester = dis.readUTF();
 		try {
 			Connection conn = Database.getNewConnection();
 			String sql;
 			PreparedStatement pst;
-			if (semester.equals("-----ÇëÑ¡Ôñ-----")) { // Ã»ÓĞÖ¸¶¨Ñ§ÆÚÊ±£¬Ä¬ÈÏÈ«²¿Ñ§ÆÚ
+			if (semester.equals("-----è¯·é€‰æ‹©-----")) { // æ²¡æœ‰æŒ‡å®šå­¦æœŸæ—¶ï¼Œé»˜è®¤å…¨éƒ¨å­¦æœŸ
 				sql = "select distinct cname " + "from grade " + "where pid = ?";
 				pst = conn.prepareStatement(sql);
 				pst.setString(1, id);
@@ -107,28 +106,27 @@ public class Professor {
 		}
 	}
 
-	public void GetGrades() throws IOException { // »ñÈ¡Ö¸¶¨Ñ§ÆÚ¡¢Ö¸¶¨¿Î³ÌµÄÑ§Éú³É¼¨
-		System.out.println("GetGrades-------------------------------");
+	public void GetGrades() throws IOException { // è·å–æŒ‡å®šå­¦æœŸã€æŒ‡å®šè¯¾ç¨‹çš„å­¦ç”Ÿæˆç»©
 		String semester = dis.readUTF();
 		String course = dis.readUTF();
 		try {
 			Connection conn = Database.getNewConnection();
 			String sql;
 			PreparedStatement pst;
-			if (course.equals("-----ÇëÑ¡Ôñ-----")) {
-				if (semester.equals("-----ÇëÑ¡Ôñ-----")) {// Ã»ÓĞÖ¸¶¨Ñ§ÆÚºÍ¿Î³Ì£¬Ä¬ÈÏÈ«²¿
+			if (course.equals("-----è¯·é€‰æ‹©-----")) {
+				if (semester.equals("-----è¯·é€‰æ‹©-----")) {// æ²¡æœ‰æŒ‡å®šå­¦æœŸå’Œè¯¾ç¨‹ï¼Œé»˜è®¤å…¨éƒ¨
 					sql = "select grade.sid,name,semester,cname,grade "
 							+ "from grade join student on grade.sid=student.sid " + "where pid = ?";
 					pst = conn.prepareStatement(sql);
 					pst.setString(1, id);
-				} else {// Ö»Ö¸¶¨ÁËÑ§ÆÚ
+				} else {// åªæŒ‡å®šäº†å­¦æœŸ
 					sql = "select grade.sid,name,semester,cname,grade "
 							+ "from grade join student on grade.sid=student.sid " + "where semester = ? and pid = ?";
 					pst = conn.prepareStatement(sql);
 					pst.setString(1, semester);
 					pst.setString(2, id);
 				}
-			} else {// Ö¸¶¨ÁËÑ§ÆÚºÍ¿Î³Ì
+			} else {// æŒ‡å®šäº†å­¦æœŸå’Œè¯¾ç¨‹
 				sql = "select grade.sid,name,semester,cname,grade "
 						+ "from grade join student on grade.sid=student.sid "
 						+ "where semester = ? and cname = ? and pid = ? ";
@@ -154,8 +152,7 @@ public class Professor {
 		}
 	}
 
-	public void SubmitGrades() throws IOException, SQLException { // Ìá½»Ñ§Éú³É¼¨
-		System.out.println("Submit-------------------------------");
+	public void SubmitGrades() throws IOException, SQLException { // æäº¤å­¦ç”Ÿæˆç»©
 		String str = dis.readUTF();
 		Connection conn = Database.getNewConnection();
 		PreparedStatement pst = null;
@@ -184,7 +181,7 @@ public class Professor {
 			pst.close();
 			conn.close();
 		} catch (SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}
