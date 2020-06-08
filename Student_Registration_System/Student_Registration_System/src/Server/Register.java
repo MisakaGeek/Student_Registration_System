@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class Register {
 	private Connection conn;
 	private PreparedStatement pst;
-	private ResultSet rs;
+	private ResultSet rs ;
 	
 	Socket socket;
     DataInputStream dis;
@@ -26,10 +26,11 @@ public class Register {
 			this.dis = new DataInputStream(
 			        new BufferedInputStream(socket.getInputStream()));
 			this.dos = new DataOutputStream(
-	                new BufferedOutputStream(socket.getOutputStream()));//Êä³öÁ÷
+	                new BufferedOutputStream(socket.getOutputStream()));//è¾“å‡ºæµ
 			this.conn = Database.getNewConnection();
+			
 		} catch (IOException | SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 		
@@ -38,11 +39,17 @@ public class Register {
 	public String login(String id,String pw) {
 		try {
 			conn = Database.getNewConnection();
+			pst=null;
+			rs=null;
 		} catch (SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 		return "1";
+	}
+	public String open_Registration() {
+		SRSServer.isRegistration_time=1;
+		return "true";
 	}
 	public void close_Registration() {
 		
@@ -55,11 +62,11 @@ public class Register {
 	}
 	public void close() {
 		try {
-			rs.close();
-			pst.close();
+			if(rs!=null) {rs.close();}
+			if(pst!=null) {pst.close();}
 			conn.close();
 		} catch (SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}
