@@ -43,20 +43,22 @@ public class Student {
 			this.dis = new DataInputStream(
 			        new BufferedInputStream(socket.getInputStream()));
 			this.dos = new DataOutputStream(
-	                new BufferedOutputStream(socket.getOutputStream()));//Êä³öÁ÷
+	                new BufferedOutputStream(socket.getOutputStream()));//è¾“å‡ºæµ
 			this.conn = Database.getNewConnection();
+			this.pst=null;
+			this.rs=null;
 		} catch (IOException | SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}
 	public String login(String id,String pw) throws SQLException {
 		/*
-		 * µ±·şÎñÆ÷½ÓÊÕµ½Ñ§Éú¿Í»§¶Ë·¢À´µÄµÇÂ¼ÇëÇóºó£¬´´½¨Ñ§Éú¶ÔÏó²¢Ö´ĞĞ´Ë·½·¨
-		 * 1.·ÃÎÊÊı¾İ¿â£¬¶ÔidÓëpw½øĞĞ¼ìË÷£¬Èô¼ìË÷²»µ½»ò²»Æ¥Åä£¬±¨´í£¬·µ»Ø0
-		 * 2.ÈôÆ¥Åä£¬Ôò¼ìË÷Êı¾İ¿â¸ÃÑ§ÉúµÄĞÅÏ¢£¬´æ·Åµ½±¾¶ÔÏóÖĞ£¬²¢·µ»Ø1±íÊ¾µÇÂ¼³É¹¦¡£
+		 * å½“æœåŠ¡å™¨æ¥æ”¶åˆ°å­¦ç”Ÿå®¢æˆ·ç«¯å‘æ¥çš„ç™»å½•è¯·æ±‚åï¼Œåˆ›å»ºå­¦ç”Ÿå¯¹è±¡å¹¶æ‰§è¡Œæ­¤æ–¹æ³•
+		 * 1.è®¿é—®æ•°æ®åº“ï¼Œå¯¹idä¸pwè¿›è¡Œæ£€ç´¢ï¼Œè‹¥æ£€ç´¢ä¸åˆ°æˆ–ä¸åŒ¹é…ï¼ŒæŠ¥é”™ï¼Œè¿”å›0
+		 * 2.è‹¥åŒ¹é…ï¼Œåˆ™æ£€ç´¢æ•°æ®åº“è¯¥å­¦ç”Ÿçš„ä¿¡æ¯ï¼Œå­˜æ”¾åˆ°æœ¬å¯¹è±¡ä¸­ï¼Œå¹¶è¿”å›1è¡¨ç¤ºç™»å½•æˆåŠŸã€‚
 		 */
-		//²¹³ä£º¶ÔÊı¾İ¿â½øĞĞ¼ìË÷
+		//è¡¥å……ï¼šå¯¹æ•°æ®åº“è¿›è¡Œæ£€ç´¢
 		String sql;
 		sql = "select sid,password from student where sid=?";
 		pst=conn.prepareStatement(sql);
@@ -65,7 +67,7 @@ public class Student {
 		rs.next();
 		String testidString=rs.getString("sid");
 		String testpwString=rs.getString("password");
-		boolean flag=false;//²âÊÔÓÃ£¬Ö®ºóÉ¾µô
+		boolean flag=false;//æµ‹è¯•ç”¨ï¼Œä¹‹ååˆ æ‰
 		if(id.equals(testidString)&&pw.equals(testpwString)) {flag=true;}
 		else {flag=false;}
 		if(flag) {
@@ -84,11 +86,11 @@ public class Student {
 	
 	public void close() {
 		try {
-			rs.close();
-			pst.close();
+			if(rs!=null) {rs.close();}
+			if(pst!=null) {pst.close();}
 			conn.close();
 		} catch (SQLException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +103,7 @@ class Schdule{
 	String stu_id;
 	ArrayList<String>main_lesson;
 	ArrayList<String>alternate_lesson;
-	int status;//µ±Ç°¿Î±íµÄÌá½»×´Ì¬£¬0Î´Ìá½»£¬1ÒÑ±£´æ£¬2ÒÑÌá½»
+	int status;//å½“å‰è¯¾è¡¨çš„æäº¤çŠ¶æ€ï¼Œ0æœªæäº¤ï¼Œ1å·²ä¿å­˜ï¼Œ2å·²æäº¤
 	public Schdule() {
 		stu_id=null;
 		main_lesson=new ArrayList<String>(4);;
