@@ -19,9 +19,6 @@ public class MaintainStudent extends JFrame {
 	private DataInputStream dis;
 	private DataOutputStream dos;
 	private Vector<String> idd=new Vector<String>();
-	/*public static void main(String[] args) {
-		MaintainStudent a=new MaintainStudent();
-	}*/
 	public MaintainStudent(Socket socket)   {
 		super("学生信息维护");
 		this.socket=socket;
