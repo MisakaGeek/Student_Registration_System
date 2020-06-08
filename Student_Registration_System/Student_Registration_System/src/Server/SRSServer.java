@@ -111,7 +111,45 @@ class SingleServer implements Runnable {
                 		String result=student.login(idString, pwString);
                 		dos.writeUTF(result);
                 		dos.flush();
-                	}else if (request.charAt(1) == '8')
+                	}else if(request.toCharArray()[1]=='2') {
+                		if(SRSServer.isRegistration_time == 1) {
+                			dos.writeChars("2");
+                			dos.flush();
+                		}else {
+                			dos.writeChars("1");
+                			dos.flush();
+                		}
+                	}else if(request.toCharArray()[1]=='3') {
+                		String id = dis.readUTF();
+    					student.createSchedule(id, dos);
+                	}else if(request.toCharArray()[1]=='4') {
+                		String id = dis.readUTF();
+    					student.updateSchedule(id, dos);
+                	}else if(request.toCharArray()[1]=='5') {
+                		String id = dis.readUTF();
+    					student.deleteSchedule(id, dos);
+                	}else if(request.toCharArray()[1]=='6') {
+                		String id = dis.readUTF();
+    					ArrayList<String> lessons = new ArrayList<String>();
+    					for(int i=0;i<6;i++) {
+    						String lesson;
+    						lesson = dis.readUTF();
+    						lessons.add(lesson);
+    					}
+    					student.saveSchedule(id, dos, lessons);
+                	}else if(request.toCharArray()[1]=='7') {
+                		String id = dis.readUTF();
+    					ArrayList<String> lessons = new ArrayList<String>();
+    					for(int i=0;i<6;i++) {
+    						String lesson;
+    						lesson = dis.readUTF();
+    						lessons.add(lesson);
+    					}
+    					student.submitSchedule(id, dos, lessons);
+                	}else if(request.toCharArray()[1]=='9') {
+    					String id = dis.readUTF();
+    					student.submitDeleteSchedule(id, dos);
+    				}else if (request.charAt(1) == '8')
 						        student.ViewGrades();
                 	//补充：此处添加else if或是改成switch，补充完善学生角色的其他用例
                 }else if(request.toCharArray()[0]=='2') {//客户端身份是教授

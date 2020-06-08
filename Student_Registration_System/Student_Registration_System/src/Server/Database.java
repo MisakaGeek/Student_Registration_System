@@ -8,9 +8,11 @@ import java.sql.Statement;
 
 public class Database {
 	private static String dbOldUrl = "jdbc:mysql://localhost:3306/course_catalog";
-	private static String dbNewUrl = "jdbc:mysql://localhost:3306/administration_system?serverTimezone=UTC";
+	//private static String dbNewUrl = "jdbc:mysql://localhost:3306/administration_system?serverTimezone=UTC";
+	private static String dbNewUrl = "jdbc:mysql://localhost:3306/admininstration_system";
 	private static String dbUser = "root";
-	private static String dbPwd = "aptx4869";
+	//private static String dbPwd = "aptx4869";
+	private static String dbPwd = "root";
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");

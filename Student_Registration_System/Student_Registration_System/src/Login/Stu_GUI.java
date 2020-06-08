@@ -21,6 +21,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import javax.swing.JOptionPane;
+
+import Student_Registration_GUI.CourseRegistration;
 
 public class Stu_GUI extends JFrame implements ActionListener {
 	public int sys_width;
@@ -91,6 +94,22 @@ public class Stu_GUI extends JFrame implements ActionListener {
 			 * 3.若可以选课，则关闭当前界面，调用二级界面的GUI，执行选课的功能
 			 */
 			// 补充：执行选课用例
+
+			try {
+				dos.writeUTF("12");
+				dos.flush();
+				char res = dis.readChar();
+				System.out.println(res);
+				if(res == '2') {
+					setVisible(false);
+					new CourseRegistration(this);
+				}else if(res == '1') {
+					JOptionPane.showMessageDialog(this,"注册关闭", "消息", JOptionPane.PLAIN_MESSAGE);
+				}
+			}catch(Exception e1) {
+				e1.printStackTrace();
+			}
+
 		} else if (e.getSource() == jb2) { // 查看成绩单
 			// 补充：执行查看成绩单用例
 			try {
