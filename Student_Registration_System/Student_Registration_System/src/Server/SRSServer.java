@@ -124,7 +124,24 @@ class SingleServer implements Runnable {
                 	//补充：此处添加else if或是改成switch，补充完善教授角色的其他用例
                 }else if(request.toCharArray()[0]=='3') {//客户端身份是注册员
                 	idendity=3;
-                	if(request.toCharArray()[1]=='b') {//开启注册系统
+			            if(request.toCharArray()[1]=='3')
+                	{   
+                	    da=request.split("#");
+                	    register.update(da[1]);
+                	}
+                	else if(request.toCharArray()[1]=='4')
+                	{
+                		if(request.toCharArray()[2]=='0')
+                		{     
+                			da=request.split("#");
+                			register.searchPro(da[1]);
+                		}
+                		else if(request.toCharArray()[2]=='1')
+                		{
+                			da=request.split("#");
+                			register.searchStu(da[1]);
+                		}
+                  }else if(request.toCharArray()[1]=='b') {//开启注册系统
                 		String res=register.open_Registration();
                 		dos.writeUTF(res);
                 		dos.flush();
@@ -141,6 +158,7 @@ class SingleServer implements Runnable {
             		}
 					socket.close();
 					isEnd=true;
+
 				} catch (IOException e1) {
 					// TODO 自动生成的 catch 块
 					e1.printStackTrace();

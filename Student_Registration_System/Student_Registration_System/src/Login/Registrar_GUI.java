@@ -97,6 +97,7 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 	}
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource()==jb1) {  //开启注册按钮
+
 			String res="false";
 			try {
 				dos.writeUTF("3b");
@@ -116,8 +117,15 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 			//补充：执行关闭注册用例的功能，重点编写
 		}else if (e.getSource()==jb3) {  //维护学生信息
 			//补充：执行维护学生信息用例
+			MaintainStudent mp=new MaintainStudent(socket);
+			dispose();
+			//或者this.dispose(),不确定哪个是能用的，有一个可以，一个不可以
 		}else if(e.getSource()==jb4) {   //维护教授信息
 			//补充：执行维护教授信息用例
+			MaintainProfessor mp=new MaintainProfessor(socket);
+			dispose();
+			//同上
+
 		}
 	}
 	

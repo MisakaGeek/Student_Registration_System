@@ -1,5 +1,6 @@
 package Server;
 
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -10,11 +11,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
+
 
 public class Register {
-	private Connection conn;
-	private PreparedStatement pst;
-	private ResultSet rs ;
+
+	private Connection conn=null;
+	private PreparedStatement pst=null;
+	private ResultSet rs=null;
+	private Statement stmt=null;
+
 	
 	Socket socket;
     DataInputStream dis;
@@ -35,6 +42,7 @@ public class Register {
 		}
 		
     }
+    
     
 	public String login(String id,String pw) {
 		try {
@@ -62,12 +70,99 @@ public class Register {
 	}
 	public void close() {
 		try {
-			if(rs!=null) {rs.close();}
-			if(pst!=null) {pst.close();}
-			conn.close();
+  if(rs!=null)
+				rs.close();
+			if(pst!=null)
+				pst.close();
+			if(stmt!=null)
+				stmt.close();
+			if(conn!=null)
+				conn.close();
+
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 	}
+	
+    public void update(String sql) 
+    {
+    	
+    	int line=0;
+		
+			try {
+				stmt=conn.createStatement();
+				stmt.executeUpdate(sql);//数据库操作影响的行数，用来判断执行是否成功			    
+			    line=1;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				
+			}finally
+			{
+				try {
+					dos.writeInt(line);
+					dos.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}		
+				
+    }
+    public void searchPro(String sql) 
+    {
+    	
+    	
+			//Statement stmt;
+			try {
+				stmt = conn.createStatement();
+				rs=stmt.executeQuery(sql);	    	
+		    	String res="";
+		    	while(rs.next()){
+		            // 通过字段检索
+		            String pid  = rs.getString("pid");
+		        	String password= rs.getString("password");
+		            String name = rs.getString("name");
+		            String birthday= rs.getString("birthday");			  				    
+		 			String ssn= rs.getString("ssn");
+		 			String status= rs.getString("status");
+		 			String depart= rs.getString("department");
+		 			res=res+pid+"#"+password+"#"+name+"#"+birthday+"#"+ssn+"#"+status+"#"+depart+"#";
+		    	}
+		    	res=res+" ";
+		    	dos.writeUTF(res);
+		    	dos.flush();
+			} catch (SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+	    	
+    }
+    public void searchStu(String sql) 
+    {
+    	
+    	try {
+			
+		stmt=conn.createStatement();
+	    	rs=stmt.executeQuery(sql);
+	    	String res="";
+	    	while(rs.next()){
+	            // 通过字段检索	     	
+	            String sid  = rs.getString("sid");
+	        	String password= rs.getString("password");
+	            String name = rs.getString("name");
+	            String birthday= rs.getString("birthday");			  				    
+	 			String ssn= rs.getString("ssn");
+	 			String status= rs.getString("status");
+	 			res=res+sid+"#"+password+"#"+name+"#"+birthday+"#"+ssn+"#"+status+"#";
+	    	}
+	    	res=res+" ";
+	    	dos.writeUTF(res);
+	    	dos.flush();
+		} catch (SQLException | IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    }
 }
