@@ -1,3 +1,4 @@
+
 /*
  * @author 雷浩洁
  * @version 1.0
@@ -110,7 +111,8 @@ class SingleServer implements Runnable {
                 		String result=student.login(idString, pwString);
                 		dos.writeUTF(result);
                 		dos.flush();
-                	}
+                	}else if (request.charAt(1) == '8')
+						        student.ViewGrades();
                 	//补充：此处添加else if或是改成switch，补充完善学生角色的其他用例
                 }else if(request.toCharArray()[0]=='2') {//客户端身份是教授
                 	idendity=2;
@@ -121,6 +123,12 @@ class SingleServer implements Runnable {
                 		dos.writeUTF(result);
                 		dos.flush();
                 	}
+                  else if (request.charAt(1) == '5')
+						        professor.GetCourse();
+					        else if (request.charAt(1) == '6')
+						        professor.GetGrades();
+					        else if (request.charAt(1) == '7')
+						        professor.SubmitGrades();
                 	//补充：此处添加else if或是改成switch，补充完善教授角色的其他用例
                 }else if(request.toCharArray()[0]=='3') {//客户端身份是注册员
                 	idendity=3;
@@ -168,5 +176,4 @@ class SingleServer implements Runnable {
     	}while(!isEnd);
     }
 }
-
 
