@@ -94,6 +94,7 @@ public class Stu_GUI extends JFrame implements ActionListener {
 			 * 3.若可以选课，则关闭当前界面，调用二级界面的GUI，执行选课的功能
 			 */
 			// 补充：执行选课用例
+
 			try {
 				dos.writeUTF("12");
 				dos.flush();
@@ -108,6 +109,7 @@ public class Stu_GUI extends JFrame implements ActionListener {
 			}catch(Exception e1) {
 				e1.printStackTrace();
 			}
+
 		} else if (e.getSource() == jb2) { // 查看成绩单
 			// 补充：执行查看成绩单用例
 			try {
