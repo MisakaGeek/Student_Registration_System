@@ -1,160 +1,179 @@
+
 /*
- * @author À×ºÆ½à
+ * @author é›·æµ©æ´
  * @version 1.0
- * ·şÎñÆ÷ÊµÏÖ´úÂë
- *IPµØÖ·£º±¾»úIP£¨127.0.0.1£©£¬¶Ë¿ÚºÅ:8888
- *ÓÃserversocket´´½¨·şÎñÆ÷£¬Ê¹ÓÃExecutorServiceÀà´´½¨Ïß³Ì³Ø
- * Ã¿ÊÕµ½Ò»¸öÀ´×Ô¿Í»§¶ËµÄÁ¬½Ó£¬´´½¨Ò»¸öÏß³Ì
+ * æœåŠ¡å™¨å®ç°ä»£ç 
+ *IPåœ°å€ï¼šæœ¬æœºIPï¼ˆ127.0.0.1ï¼‰ï¼Œç«¯å£å·:8888
+ *ç”¨serversocketåˆ›å»ºæœåŠ¡å™¨ï¼Œä½¿ç”¨ExecutorServiceç±»åˆ›å»ºçº¿ç¨‹æ± 
+ * æ¯æ”¶åˆ°ä¸€ä¸ªæ¥è‡ªå®¢æˆ·ç«¯çš„è¿æ¥ï¼Œåˆ›å»ºä¸€ä¸ªçº¿ç¨‹
  */
 package Server;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
+import java.net.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+
+
+
+
+
+
 public class SRSServer {
-	private static int port = 8888; // ·şÎñÆ÷¶Ë¿ÚºÅ
+	private static int port=8888;  //æœåŠ¡å™¨ç«¯å£å·
 	public int clientNo;
 	public ServerSocket serverSocket;
 	public ExecutorService exec;
-	public static int isRegistration_time;// µ±Ç°ÏµÍ³ÊÇ·ñ´¦ÓÚÕıÔÚ×¢²áµÄ×´Ì¬ÏÂ£¬1Îª¿ª·Å×¢²á£¬0Îª¹Ø±Õ×¢²á
-	public static int isRegistration;// ¼ÇÂ¼µ±Ç°ÓĞ¶àÉÙÈË´¦ÓÚÑ¡¿Î½çÃæ
-
+	public static int isRegistration_time;//å½“å‰ç³»ç»Ÿæ˜¯å¦å¤„äºæ­£åœ¨æ³¨å†Œçš„çŠ¶æ€ä¸‹ï¼Œ1ä¸ºå¼€æ”¾æ³¨å†Œï¼Œ0ä¸ºå…³é—­æ³¨å†Œ
+	public static int isRegistration;//è®°å½•å½“å‰æœ‰å¤šå°‘äººå¤„äºé€‰è¯¾ç•Œé¢
+	
 	public static void main(String[] args) throws IOException {
-		// ´´½¨·şÎñÆ÷serversocket¶ÔÏó
+		//åˆ›å»ºæœåŠ¡å™¨serversocketå¯¹è±¡
 		SRSServer srsServer = new SRSServer();
 	}
-
-	public SRSServer() throws IOException {
-		SRSServer.isRegistration = 0;
-		SRSServer.isRegistration_time = 0;
-		clientNo = 0;
-		try {
-			serverSocket = new ServerSocket(port);// ´´½¨Ò»¸ö·şÎñÆ÷
+	public SRSServer() throws IOException  {
+		SRSServer.isRegistration=0;
+		SRSServer.isRegistration_time=0;
+        clientNo = 0;
+        try {
+			serverSocket = new ServerSocket(port);//åˆ›å»ºä¸€ä¸ªæœåŠ¡å™¨
 		} catch (IOException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
-		// ´´½¨Ïß³Ì³Ø
-		exec = Executors.newCachedThreadPool();
-		while (true) {
-			// Ñ­»·¼àÌıÀ´×Ô¿Í»§¶ËµÄÁ¬½ÓÇëÇó£¬²¢¼ÓÈëµ½Ïß³Ì³ØÖĞ
-			Socket client = serverSocket.accept();
-			clientNo++;
-			exec.execute(new SingleServer(client, clientNo));
-		}
+        // åˆ›å»ºçº¿ç¨‹æ± 
+        exec = Executors.newCachedThreadPool();
+        while (true) {
+            // å¾ªç¯ç›‘å¬æ¥è‡ªå®¢æˆ·ç«¯çš„è¿æ¥è¯·æ±‚ï¼Œå¹¶åŠ å…¥åˆ°çº¿ç¨‹æ± ä¸­
+            Socket client = serverSocket.accept();
+            clientNo++;
+            exec.execute(new SingleServer(client, clientNo));
+        }
 	}
-
+	
 }
+
+
 
 class SingleServer implements Runnable {
-	/*
-	 * ¶ÔÓëserverÁ¬½ÓµÄÃ¿Ò»¸ö¿Í»§¶Ë£¬Æô¶¯Ò»¸öÏß³Ì´´½¨¸Ã¶ÔÏó£¬Í¨¹ı¸Ã¶ÔÏóÖ´ĞĞÕë¶Ôµ±Ç°¿Í»§¶ËµÄÒ»ÇĞ²Ù×÷
-	 */
-	private Socket socket;
-	private DataInputStream dis;
-	private DataOutputStream dos;
-	private boolean isEnd;
-	private int clientNo;
-	private int idendity;// Ê¶±ğµÇÂ¼µÄ¿Í»§¶ËµÄÀàĞÍ£¬1ÎªÑ§Éú£¬2Îª½ÌÊÚ£¬3Îª¹ÜÀíÔ±
-
-	// ±£´æÓÃ»§ÃûÓëÃÜÂë
-	private String idString;
-	private String pwString;
-
-	// ¸ù¾İ¿Í»§¶ËÉí·İµÄ²»Í¬Ê¹ÓÃ¶ÔÓ¦¶ÔÏóÖ´ĞĞ²Ù×÷
-	private Student student;
-	private Professor professor;
-	private Register register;
-
-	private String request;// ±£´æ´Ó¿Í»§¶Ë·¢À´µÄÇëÇóÂë£¬¸ñÊ½ÎªÖÜ»ª»ÔµÄĞ­Òé±ê×¼
-
-	public SingleServer(Socket socket, int clientNo) {
-		this.socket = socket;
-		this.clientNo = clientNo;
-		this.idendity = 0;
-		this.isEnd = false;
-		this.request = null;
-		this.student = new Student(socket);
-		this.professor = new Professor(socket);
-		this.register = new Register(socket);
-	}
-
-	@Override
-	public void run() {
-		// ½¨Á¢Óë¿Í»§¶ËµÄIOÁ÷Á¬½Ó
-		try {
-			dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-			dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));// Êä³öÁ÷
+	/*å¯¹ä¸serverè¿æ¥çš„æ¯ä¸€ä¸ªå®¢æˆ·ç«¯ï¼Œå¯åŠ¨ä¸€ä¸ªçº¿ç¨‹åˆ›å»ºè¯¥å¯¹è±¡ï¼Œé€šè¿‡è¯¥å¯¹è±¡æ‰§è¡Œé’ˆå¯¹å½“å‰å®¢æˆ·ç«¯çš„ä¸€åˆ‡æ“ä½œ
+	 * */
+    private Socket socket;
+    private DataInputStream dis;
+    private DataOutputStream dos;
+    private boolean isEnd;
+    private int clientNo;
+    private int idendity;//è¯†åˆ«ç™»å½•çš„å®¢æˆ·ç«¯çš„ç±»å‹ï¼Œ1ä¸ºå­¦ç”Ÿï¼Œ2ä¸ºæ•™æˆï¼Œ3ä¸ºç®¡ç†å‘˜
+    
+    //ä¿å­˜ç”¨æˆ·åä¸å¯†ç 
+    private String idString;
+    private String pwString;
+    
+  //æ ¹æ®å®¢æˆ·ç«¯èº«ä»½çš„ä¸åŒä½¿ç”¨å¯¹åº”å¯¹è±¡æ‰§è¡Œæ“ä½œ
+    private Student student;
+    private Professor professor;
+    private Register register;
+    
+    private String request;//ä¿å­˜ä»å®¢æˆ·ç«¯å‘æ¥çš„è¯·æ±‚ç ï¼Œæ ¼å¼ä¸ºå‘¨åè¾‰çš„åè®®æ ‡å‡†
+    
+    public SingleServer(Socket socket, int clientNo) {
+        this.socket = socket;
+        this.clientNo = clientNo;
+        this.idendity=0;
+        this.isEnd=false;
+        this.request=null;
+        this.student = new Student(socket);
+        this.professor = new Professor(socket);
+        this.register = new Register(socket);
+    }
+    @Override
+    public void run() {
+    	//å»ºç«‹ä¸å®¢æˆ·ç«¯çš„IOæµè¿æ¥
+    	try {
+			dis = new DataInputStream(
+			        new BufferedInputStream(socket.getInputStream()));
+			dos = new DataOutputStream(
+	                new BufferedOutputStream(socket.getOutputStream()));//è¾“å‡ºæµ
 		} catch (IOException e1) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e1.printStackTrace();
 		}
-		do {
-			try {
-				request = dis.readUTF();
-				if ((request.toCharArray())[0] == '1') { // ¿Í»§¶ËÉí·İÎªÑ§Éú
-					idendity = 1;
-					if (request.toCharArray()[1] == '0') { // ÇëÇóµÇÂ¼
-						idString = dis.readUTF();
-						pwString = dis.readUTF();
-						String result = student.login(idString, pwString);
-						dos.writeUTF(result);
-						dos.flush();
-					} else if (request.charAt(1) == '8')
-						student.ViewGrades();
-					// ²¹³ä£º´Ë´¦Ìí¼Óelse if»òÊÇ¸Ä³Éswitch£¬²¹³äÍêÉÆÑ§Éú½ÇÉ«µÄÆäËûÓÃÀı
-				} else if (request.toCharArray()[0] == '2') {// ¿Í»§¶ËÉí·İÊÇ½ÌÊÚ
-					idendity = 2;
-					if (request.toCharArray()[1] == '0') { // ÇëÇóµÇÂ¼
-						String id = dis.readUTF();
-						String pw = dis.readUTF();
-						String result = professor.login(id, pw);
-						dos.writeUTF(result);
-						dos.flush();
-					} else if (request.charAt(1) == '5')
-						professor.GetCourse();
-					else if (request.charAt(1) == '6')
-						professor.GetGrades();
-					else if (request.charAt(1) == '7')
-						professor.SubmitGrades();
-					// ²¹³ä£º´Ë´¦Ìí¼Óelse if»òÊÇ¸Ä³Éswitch£¬²¹³äÍêÉÆ½ÌÊÚ½ÇÉ«µÄÆäËûÓÃÀı
-				} else if (request.toCharArray()[0] == '3') {// ¿Í»§¶ËÉí·İÊÇ×¢²áÔ±
-					idendity = 3;
-					// ²¹³ä£ºÍêÉÆ×¢²áÔ±½ÇÉ«µÄÓÃÀı
-				}
+    	do {
+    		try {
+                request=dis.readUTF();
+                if((request.toCharArray())[0]=='1') {  //å®¢æˆ·ç«¯èº«ä»½ä¸ºå­¦ç”Ÿ
+                	idendity=1;
+                	if(request.toCharArray()[1]=='0') {  //è¯·æ±‚ç™»å½•
+                		idString = dis.readUTF();
+                		pwString = dis.readUTF();
+                		String result=student.login(idString, pwString);
+                		dos.writeUTF(result);
+                		dos.flush();
+                	}else if (request.charAt(1) == '8')
+						        student.ViewGrades();
+                	//è¡¥å……ï¼šæ­¤å¤„æ·»åŠ else ifæˆ–æ˜¯æ”¹æˆswitchï¼Œè¡¥å……å®Œå–„å­¦ç”Ÿè§’è‰²çš„å…¶ä»–ç”¨ä¾‹
+                }else if(request.toCharArray()[0]=='2') {//å®¢æˆ·ç«¯èº«ä»½æ˜¯æ•™æˆ
+                	idendity=2;
+                	if(request.toCharArray()[1]=='0') {  //è¯·æ±‚ç™»å½•
+                		String id = dis.readUTF();
+                		String pw = dis.readUTF();
+                		String result=professor.login(id, pw);
+                		dos.writeUTF(result);
+                		dos.flush();
+                	}
+                  else if (request.charAt(1) == '5')
+						        professor.GetCourse();
+					        else if (request.charAt(1) == '6')
+						        professor.GetGrades();
+					        else if (request.charAt(1) == '7')
+						        professor.SubmitGrades();
+                	//è¡¥å……ï¼šæ­¤å¤„æ·»åŠ else ifæˆ–æ˜¯æ”¹æˆswitchï¼Œè¡¥å……å®Œå–„æ•™æˆè§’è‰²çš„å…¶ä»–ç”¨ä¾‹
+                }else if(request.toCharArray()[0]=='3') {//å®¢æˆ·ç«¯èº«ä»½æ˜¯æ³¨å†Œå‘˜
+                	idendity=3;
+			            if(request.toCharArray()[1]=='3')
+                	{   
+                	    da=request.split("#");
+                	    register.update(da[1]);
+                	}
+                	else if(request.toCharArray()[1]=='4')
+                	{
+                		if(request.toCharArray()[2]=='0')
+                		{     
+                			da=request.split("#");
+                			register.searchPro(da[1]);
+                		}
+                		else if(request.toCharArray()[2]=='1')
+                		{
+                			da=request.split("#");
+                			register.searchStu(da[1]);
+                		}
+                  }else if(request.toCharArray()[1]=='b') {//å¼€å¯æ³¨å†Œç³»ç»Ÿ
+                		String res=register.open_Registration();
+                		dos.writeUTF(res);
+                		dos.flush();
+                	}
+                }
 
-			} catch (IOException | SQLException e) {
-				e.printStackTrace();
-				switch (idendity) {
-				case 1:
-					student.close();
-					break;
-				case 2:
-					professor.close();
-					break;
-				case 3:
-					register.close();
-					break;
-				default:
-					break;
-				}
-				try {
+            } catch (IOException | SQLException e) {
+            	try {
+            		switch(idendity) {
+            		case 1:student.close();break;
+            		case 2:professor.close();break;
+            		case 3:register.close();break;
+            		default: break;
+            		}
 					socket.close();
+					isEnd=true;
+
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
+					// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 					e1.printStackTrace();
 				}
-				isEnd = true;
-			} finally {
-			}
-		} while (!isEnd);
-	}
+            	e.printStackTrace();
+            }
+    	}while(!isEnd);
+    }
 }
+

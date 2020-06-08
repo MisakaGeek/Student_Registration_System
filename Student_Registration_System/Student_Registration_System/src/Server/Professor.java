@@ -5,11 +5,29 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
 import java.net.Socket;
+import java.net.URL;
+import java.sql.Array;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.NClob;
+import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
+import java.sql.Ref;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.RowId;
 import java.sql.SQLException;
+import java.sql.SQLWarning;
+import java.sql.SQLXML;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class Professor {
 	String id;
@@ -37,9 +55,15 @@ public class Professor {
 		status = null;
 		department = null;
 		try {
-			this.dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-			this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));// 输出流
+
+			this.dis = new DataInputStream(
+			        new BufferedInputStream(socket.getInputStream()));
+			this.dos = new DataOutputStream(
+	                new BufferedOutputStream(socket.getOutputStream()));//输出流
 			conn = Database.getNewConnection();
+			pst=null;
+			rs=null;
+		
 		} catch (SQLException | IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -55,6 +79,7 @@ public class Professor {
 
 		this.id = id;
 		this.password = pw;
+
 		String sql;
 		sql = "select pid,password from professor where pid=?";
 		pst = conn.prepareStatement(sql);
@@ -177,8 +202,8 @@ public class Professor {
 
 	public void close() {
 		try {
-			rs.close();
-			pst.close();
+			if(rs!=null) {rs.close();}
+			if(pst!=null) {pst.close();}
 			conn.close();
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
