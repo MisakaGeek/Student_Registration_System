@@ -19,11 +19,9 @@ public class MaintainProfessor extends JFrame {
 	private Socket socket;
 	private DataInputStream dis;
 	private DataOutputStream dos;
-	/*public static void main(String[] args) {
-		MaintainProfessor a=new MaintainProfessor(socket);
-	}*/
+	
 	public MaintainProfessor(Socket socket)  {
-		super("½ÌÊÚĞÅÏ¢Î¬»¤");
+		super("æ•™æˆä¿¡æ¯ç»´æŠ¤");
 		this.socket=socket;
 		try {
 			dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -45,28 +43,26 @@ public class MaintainProfessor extends JFrame {
 		//this.getContentPane().add(sp1);
 		this.add(sp1);
 		
-		//JLabel jl1=new JLabel("±¾ÉÌµê×î¶à¿ÉÈİÄÉ"+shop.getLen()+"Ö»³èÎï");
-		//con.add(jl1);
-		//jl1.setBounds(0, 0, 160, 30);
-		JComboBox jc=new JComboBox();//Ñ¡Ôñ²éÕÒ±ê×¼µÄÏÂÀ­¿ò
-		jc.setEditable(false);//²»¿É±à¼­
+		
+		JComboBox jc=new JComboBox();//é€‰æ‹©æŸ¥æ‰¾æ ‡å‡†çš„ä¸‹æ‹‰æ¡†
+		jc.setEditable(false);//ä¸å¯ç¼–è¾‘
 	    jc.setEnabled(true);
-	    String[] arr ={"----²éÕÒ±ê×¼----"};
-		ComboBoxModel cbm = new DefaultComboBoxModel(arr);//ÏÂÀ­¿òµÄÏÔÊ¾²»¿ÉÑ¡
+	    String[] arr ={"----æŸ¥æ‰¾æ ‡å‡†----"};
+		ComboBoxModel cbm = new DefaultComboBoxModel(arr);//ä¸‹æ‹‰æ¡†çš„æ˜¾ç¤ºä¸å¯é€‰
 		jc.setModel(cbm);
-		jc.addItem("pid");//Ìí¼ÓÑ¡Ïî
-	    jc.addItem("ĞÕÃû");
-	    jc.addItem("³öÉúÈÕÆÚ");
+		jc.addItem("pid");//æ·»åŠ é€‰é¡¹
+	    jc.addItem("å§“å");
+	    jc.addItem("å‡ºç”Ÿæ—¥æœŸ");
 	    jc.addItem("SSN");
-	    jc.addItem("Ö°³Æ");
-	    jc.addItem("ÔºÏµ");
+	    jc.addItem("èŒç§°");
+	    jc.addItem("é™¢ç³»");
 	   
 	    con.add(jc);
 		jc.setBounds(420, 50, 110, 24);
-		JButton jb=new JButton("²éÕÒ");//²éÕÒ°´Å¥
+		JButton jb=new JButton("æŸ¥æ‰¾");//æŸ¥æ‰¾æŒ‰é’®
 		con.add(jb);
 		jb.addActionListener(new ActionListener() {
-			//¸ø²éÕÒ°´Å¥Ìí¼ÓÊÂ¼ş¼àÌı
+			//ç»™æŸ¥æ‰¾æŒ‰é’®æ·»åŠ äº‹ä»¶ç›‘å¬
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -80,25 +76,24 @@ public class MaintainProfessor extends JFrame {
 					dispose();
 				}
 				
-				//shop.petSearch1(jc.getSelectedItem().toString());//´«Èë²ÎÊıÎª±ê×¼
-				//µ÷ÓÃ¹ÜÀíÔ±µÄ²éÕÒº¯Êı
+				
 			}
 		});
 		jb.setBounds(540, 50, 60, 25);
-		JButton b=new JButton("Ìí¼Ó");
+		JButton b=new JButton("æ·»åŠ ");
 		con.add(b);
 		b.setBounds(610, 50, 60, 25);
-		JButton b2=new JButton("·µ»Ø");
+		JButton b2=new JButton("è¿”å›");
 		con.add(b2);
 		b2.setBounds(1015, 50, 60, 25);
-		JLabel jl1=new JLabel("ĞòºÅ");
+		JLabel jl1=new JLabel("åºå·");
 		JLabel jl3=new JLabel("pid");
-		JLabel jl4=new JLabel("ÃÜÂë");
-		JLabel jl5=new JLabel("ĞÕÃû");
-		JLabel jl6=new JLabel("³öÉúÈÕÆÚ");
+		JLabel jl4=new JLabel("å¯†ç ");
+		JLabel jl5=new JLabel("å§“å");
+		JLabel jl6=new JLabel("å‡ºç”Ÿæ—¥æœŸ");
 		JLabel jl7=new JLabel("SSN");
-		JLabel jl8=new JLabel("Ö°³Æ");
-		JLabel jl9=new JLabel("ÔºÏµ");
+		JLabel jl8=new JLabel("èŒç§°");
+		JLabel jl9=new JLabel("é™¢ç³»");
 		jl1.setBounds(35, 90, 60, 25);
 		jl3.setBounds(135, 90, 60, 25);
 		jl4.setBounds(235, 90, 60, 25);
@@ -127,13 +122,13 @@ public class MaintainProfessor extends JFrame {
 		
 		String da[];
 		da=data.split("#");
-		int i=0;//iÊÇµ±Ç°ĞÅÏ¢µÄĞòºÅ£¬ÓÃÀ´ÊµÏÖÉ¾³ıĞŞ¸ÄµÄ¶¨Î»
-		int j=0;//jÊÇÎªÁËµÃµ½´«»ØÀ´µÄÊı¾İ£¬ÒòÎªÊÇÓÃ#·Ö¿ªµÄÊı¾İ
+		int i=0;//iæ˜¯å½“å‰ä¿¡æ¯çš„åºå·ï¼Œç”¨æ¥å®ç°åˆ é™¤ä¿®æ”¹çš„å®šä½
+		int j=0;//jæ˜¯ä¸ºäº†å¾—åˆ°ä¼ å›æ¥çš„æ•°æ®ï¼Œå› ä¸ºæ˜¯ç”¨#åˆ†å¼€çš„æ•°æ®
 		
 	
        while(!da[j].equals(" ")){
     	   final int k=i;
-           // Í¨¹ı×Ö¶Î¼ìË÷
+           // é€šè¿‡å­—æ®µæ£€ç´¢
            String pid  = da[j++];
        		String password=da[j++];
            String name = da[j++];
@@ -158,7 +153,7 @@ public class MaintainProfessor extends JFrame {
 			con.add(l5);
 			con.add(l6);
 			con.add(l7);
-			jl10.setBounds(35, 120+70*i, 60, 25);//¿ØÖÆÎ»ÖÃËæĞÅÏ¢µÄÌõÊıÔö¼Ó±ä»¯
+			jl10.setBounds(35, 120+70*i, 60, 25);//æ§åˆ¶ä½ç½®éšä¿¡æ¯çš„æ¡æ•°å¢åŠ å˜åŒ–
 			l1.setBounds(135, 120+70*i, 60, 25);
 			l2.setBounds(235, 120+70*i, 60, 25);	
 			l3.setBounds(365, 120+70*i, 60, 25);
@@ -166,24 +161,24 @@ public class MaintainProfessor extends JFrame {
 			l5.setBounds(565, 120+70*i, 60, 25);
 			l6.setBounds(715, 120+70*i, 60, 25);
 			l7.setBounds(815, 120+70*i, 60, 25);
-			JButton jb1=new JButton("É¾³ı");//¶Ô´ËÌõĞÅÏ¢É¾³ı
-			JButton jb2=new JButton("ĞŞ¸Ä");//¶Ô´ËÌõĞÅÏ¢ĞŞ¸Ä
+			JButton jb1=new JButton("åˆ é™¤");//å¯¹æ­¤æ¡ä¿¡æ¯åˆ é™¤
+			JButton jb2=new JButton("ä¿®æ”¹");//å¯¹æ­¤æ¡ä¿¡æ¯ä¿®æ”¹
 			con.add(jb1);
 			jb1.setBounds(945, 120+70*i, 60, 25);
 			con.add(jb2);
 			jb2.setBounds(1015, 120+70*i, 60, 25);
 			idd.add(pid);
 			jb1.addActionListener(new ActionListener() {
-				//É¾³ı°´Å¥Ìí¼ÓÊÂ¼ş¼àÌı
+				//åˆ é™¤æŒ‰é’®æ·»åŠ äº‹ä»¶ç›‘å¬
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					int n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªÉ¾³ıÂğ?", "ÏûÏ¢¿ò", JOptionPane.YES_NO_OPTION);
+					int n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦åˆ é™¤å—?", "æ¶ˆæ¯æ¡†", JOptionPane.YES_NO_OPTION);
 					if (n == JOptionPane.YES_OPTION) {
 						Search_Del rg;
 						try {
 							rg = new Search_Del(socket);
-							rg.del(k,idd);//É¾³ıº¯Êı
+							rg.del(k,idd);//åˆ é™¤å‡½æ•°
 						} catch (IOException e1) {
 							// TODO Auto-generated catch block
 							//e1.printStackTrace();
@@ -195,7 +190,7 @@ public class MaintainProfessor extends JFrame {
 				}
 			});
 			jb2.addActionListener(new ActionListener() {
-				//ĞŞ¸Ä°´Å¥Ìí¼ÓÊÂ¼ş¼àÌı
+				//ä¿®æ”¹æŒ‰é’®æ·»åŠ äº‹ä»¶ç›‘å¬
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
@@ -207,7 +202,7 @@ public class MaintainProfessor extends JFrame {
 						// TODO Auto-generated catch block
 					//	e1.printStackTrace();
 					}
-					//ĞŞ¸Äº¯Êı
+					//ä¿®æ”¹å‡½æ•°
 					dispose();
 					
 				}
@@ -219,7 +214,7 @@ public class MaintainProfessor extends JFrame {
 		   
 		
 		b.addActionListener(new ActionListener() {	
-			//Ìí¼Ó°´Å¥Ìí¼ÓÊÂ¼ş¼àÌı
+			//æ·»åŠ æŒ‰é’®æ·»åŠ äº‹ä»¶ç›‘å¬
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AddProfessor add=new AddProfessor(socket);
@@ -232,6 +227,7 @@ public class MaintainProfessor extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				dispose();
+				Registrar_GUI rg=new Registrar_GUI(socket);
 			}
 		});
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
