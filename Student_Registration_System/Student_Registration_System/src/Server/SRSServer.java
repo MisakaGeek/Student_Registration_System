@@ -1,4 +1,3 @@
-
 /*
  * @author 雷浩洁
  * @version 1.0
@@ -103,6 +102,7 @@ class SingleServer implements Runnable {
     	do {
     		try {
                 request=dis.readUTF();
+                String da[];
                 if((request.toCharArray())[0]=='1') {  //客户端身份为学生
                 	idendity=1;
                 	if(request.toCharArray()[1]=='0') {  //请求登录
@@ -176,4 +176,3 @@ class SingleServer implements Runnable {
     	}while(!isEnd);
     }
 }
-
