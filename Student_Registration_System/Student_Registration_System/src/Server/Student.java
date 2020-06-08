@@ -462,6 +462,14 @@ public class Student {
 			e.printStackTrace();
 		}
 	}
+	/*
+	 * 推出学生注册
+	 */
+	void backStudRegistration() {
+		SRSServer.isRegistration--;
+		dos.writeUTF("success");
+		dos.flush();
+	}
 	
 	public void ViewGrades() throws IOException { 
 		String semester = dis.readUTF();
