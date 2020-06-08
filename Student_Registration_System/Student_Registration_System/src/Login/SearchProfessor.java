@@ -32,7 +32,7 @@ public class SearchProfessor extends JFrame{
 	private DataOutputStream dos;
 	public SearchProfessor(Socket socket) {
 		// TODO Auto-generated constructor stub
-		super("½ÌÊÚĞÅÏ¢²éÑ¯");
+		super("æ•™æˆä¿¡æ¯æŸ¥è¯¢");
 		this.socket=socket;
 		try {
 			dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -54,9 +54,9 @@ public class SearchProfessor extends JFrame{
 		//setLayout(null);
 		tf=new JTextField();
 		tf.setBounds(470, 40, 120, 25);
-		jb1=new JButton("È·¶¨");
+		jb1=new JButton("ç¡®å®š");
 		jb1.setBounds(600, 40, 60, 25);
-		JButton jb2=new JButton("È¡Ïû");
+		JButton jb2=new JButton("å–æ¶ˆ");
 		jb2.setBounds(670, 40, 60, 25);
 		con.add(jb1);
 		con.add(jb2);
@@ -75,17 +75,17 @@ public class SearchProfessor extends JFrame{
 	}
 	public void searchType(String tp) {
 		SearchProfessor fs=this;
-		JLabel jl=new JLabel("ÇëÊäÈëÒª²éÑ¯µÄ"+tp);
+		JLabel jl=new JLabel("è¯·è¾“å…¥è¦æŸ¥è¯¢çš„"+tp);
 		jl.setBounds(300, 40, 180, 30);
 		con.add(jl);
-		JLabel jl3=new JLabel("ĞòºÅ");
+		JLabel jl3=new JLabel("åºå·");
 		JLabel jl4=new JLabel("pid");
-		JLabel jl5=new JLabel("ÃÜÂë");
-		JLabel jl6=new JLabel("ĞÕÃû");
-		JLabel jl7=new JLabel("³öÉúÈÕÆÚ");
+		JLabel jl5=new JLabel("å¯†ç ");
+		JLabel jl6=new JLabel("å§“å");
+		JLabel jl7=new JLabel("å‡ºç”Ÿæ—¥æœŸ");
 		JLabel jl8=new JLabel("SSN");
-		JLabel jl9=new JLabel("Ö°³Æ");
-		JLabel jl10=new JLabel("ÔºÏµ");
+		JLabel jl9=new JLabel("èŒç§°");
+		JLabel jl10=new JLabel("é™¢ç³»");
 	
 	
 		jl3.setBounds(35, 90, 60, 25);
@@ -109,20 +109,20 @@ public class SearchProfessor extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-					String sql="select * from professor where "+mmp.get(tp)+"='"+tf.getText().trim()+"'";// ('"+pid+"','"+name+"','"+birthday+"','"+ssn+"','"+depart+"','"+password+"','"+status+"')";   //SQLÓï¾ä
+					String sql="select * from professor where "+mmp.get(tp)+"='"+tf.getText().trim()+"'";// ('"+pid+"','"+name+"','"+birthday+"','"+ssn+"','"+depart+"','"+password+"','"+status+"')";   //SQLè¯­å¥
 					try {
 						dos.writeUTF("340"+"#"+sql);
 						dos.flush();
 						String data=dis.readUTF();
 						String da[];
 						da=data.split("#");
-						int i=0;//iÊÇµ±Ç°ĞÅÏ¢µÄĞòºÅ£¬ÓÃÀ´ÊµÏÖÉ¾³ıĞŞ¸ÄµÄ¶¨Î»
-						int j=0;//jÊÇÎªÁËµÃµ½´«»ØÀ´µÄÊı¾İ£¬ÒòÎªÊÇÓÃ#·Ö¿ªµÄÊı¾İ
+						int i=0;//iæ˜¯å½“å‰ä¿¡æ¯çš„åºå·ï¼Œç”¨æ¥å®ç°åˆ é™¤ä¿®æ”¹çš„å®šä½
+						int j=0;//jæ˜¯ä¸ºäº†å¾—åˆ°ä¼ å›æ¥çš„æ•°æ®ï¼Œå› ä¸ºæ˜¯ç”¨#åˆ†å¼€çš„æ•°æ®
 						
 					
 				       while(!da[j].equals(" ")){
 				    	    final int k=i;
-				           // Í¨¹ı×Ö¶Î¼ìË÷
+				           // é€šè¿‡å­—æ®µæ£€ç´¢
 				            String pid  = da[j++];
 				       		String password=da[j++];
 				            String name = da[j++];
@@ -150,7 +150,7 @@ public class SearchProfessor extends JFrame{
 									con.add(l5);
 									con.add(l6);
 									con.add(l7);
-									jl11.setBounds(35, 120+70*i, 60, 25);//¿ØÖÆÎ»ÖÃËæĞÅÏ¢µÄÌõÊıÔö¼Ó±ä»¯
+									jl11.setBounds(35, 120+70*i, 60, 25);//æ§åˆ¶ä½ç½®éšä¿¡æ¯çš„æ¡æ•°å¢åŠ å˜åŒ–
 									l1.setBounds(135, 120+70*i, 60, 25);
 									l2.setBounds(235, 120+70*i, 60, 25);	
 									l3.setBounds(365, 120+70*i, 60, 25);
@@ -158,19 +158,19 @@ public class SearchProfessor extends JFrame{
 									l5.setBounds(565, 120+70*i, 60, 25);
 									l6.setBounds(715, 120+70*i, 60, 25);
 									l7.setBounds(815, 120+70*i, 60, 25);
-									JButton jb1=new JButton("É¾³ı");//¶Ô´ËÌõĞÅÏ¢É¾³ı
-									JButton jb2=new JButton("ĞŞ¸Ä");//¶Ô´ËÌõĞÅÏ¢ĞŞ¸Ä
+									JButton jb1=new JButton("åˆ é™¤");//å¯¹æ­¤æ¡ä¿¡æ¯åˆ é™¤
+									JButton jb2=new JButton("ä¿®æ”¹");//å¯¹æ­¤æ¡ä¿¡æ¯ä¿®æ”¹
 									con.add(jb1);
 									jb1.setBounds(945, 120+70*i, 60, 25);
 									con.add(jb2);
 									jb2.setBounds(1015, 120+70*i, 60, 25);
 									idd.add(pid);
 									jb1.addActionListener(new ActionListener() {
-										//É¾³ı°´Å¥Ìí¼ÓÊÂ¼ş¼àÌı
+										//åˆ é™¤æŒ‰é’®æ·»åŠ äº‹ä»¶ç›‘å¬
 										@Override
 										public void actionPerformed(ActionEvent e) {
 											// TODO Auto-generated method stub
-											int n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªÉ¾³ıÂğ?", "ÏûÏ¢¿ò", JOptionPane.YES_NO_OPTION);
+											int n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦åˆ é™¤å—?", "æ¶ˆæ¯æ¡†", JOptionPane.YES_NO_OPTION);
 											if (n == JOptionPane.YES_OPTION) {
 												Search_Del rg;
 												try {
@@ -180,14 +180,14 @@ public class SearchProfessor extends JFrame{
 													// TODO Auto-generated catch block
 												//	e1.printStackTrace();
 												}
-												//É¾³ıº¯Êı
+												//åˆ é™¤å‡½æ•°
 												dispose();
 					
 											}
 										}
 									});
 									jb2.addActionListener(new ActionListener() {
-										//ĞŞ¸Ä°´Å¥Ìí¼ÓÊÂ¼ş¼àÌı
+										//ä¿®æ”¹æŒ‰é’®æ·»åŠ äº‹ä»¶ç›‘å¬
 										@Override
 										public void actionPerformed(ActionEvent e) {
 											// TODO Auto-generated method stub
@@ -199,7 +199,7 @@ public class SearchProfessor extends JFrame{
 												// TODO Auto-generated catch block
 												//e1.printStackTrace();
 											}
-											//ĞŞ¸Äº¯Êı
+											//ä¿®æ”¹å‡½æ•°
 											dispose();
 											
 										}
@@ -219,13 +219,13 @@ public class SearchProfessor extends JFrame{
 	}
 	public void setmmp()
 	{
-		//Ñ¡ÏîÊÇÎÄ×Ö£¬°ÑËû×¥»»Î»±í¸ñµÄÊôĞÔ£¬Ö´ĞĞsqlÓï¾äµÄÊ±ºòÓÃµ½
+		//é€‰é¡¹æ˜¯æ–‡å­—ï¼ŒæŠŠä»–æŠ“æ¢ä½è¡¨æ ¼çš„å±æ€§ï¼Œæ‰§è¡Œsqlè¯­å¥çš„æ—¶å€™ç”¨åˆ°
 		mmp.put("pid", "pid");
-		mmp.put("ĞÕÃû", "name");
-		mmp.put("³öÉúÈÕÆÚ", "birthday");
+		mmp.put("å§“å", "name");
+		mmp.put("å‡ºç”Ÿæ—¥æœŸ", "birthday");
 		mmp.put("SSN", "SSN");
-		mmp.put("Ö°³Æ", "status");
-		mmp.put("ÔºÏµ", "department");
+		mmp.put("èŒç§°", "status");
+		mmp.put("é™¢ç³»", "department");
 		
 	}
 	

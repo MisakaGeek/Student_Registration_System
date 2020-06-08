@@ -1,5 +1,5 @@
 package Login;
-
+//åˆ é™¤
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
@@ -57,12 +57,12 @@ public class Search_Del {
          System.out.println(success);
          if(success==0)
          {
-        	 JOptionPane.showMessageDialog(null, "²Ù×÷Ê§°Ü");
+        	 JOptionPane.showMessageDialog(null, "æ“ä½œå¤±è´¥");
         	 
          }
          else
          {	
-        	 JOptionPane.showMessageDialog(null, "É¾³ı³É¹¦");		
+        	 JOptionPane.showMessageDialog(null, "åˆ é™¤æˆåŠŸ");		
          }
     	
     	MaintainProfessor a=new MaintainProfessor(socket);
@@ -89,12 +89,12 @@ public class Search_Del {
         System.out.println(success);
         if(success==0)
         {
-       	 JOptionPane.showMessageDialog(null, "²Ù×÷Ê§°Ü");
+       	 JOptionPane.showMessageDialog(null, "æ“ä½œå¤±è´¥");
        	 
         }
         else
         {		
-        	JOptionPane.showMessageDialog(null, "É¾³ı³É¹¦");	
+        	JOptionPane.showMessageDialog(null, "åˆ é™¤æˆåŠŸ");	
         }
     	
     	MaintainStudent a=new MaintainStudent(socket);

@@ -23,7 +23,7 @@ public class ModifyStudent extends JFrame{
 	private DataOutputStream dos;
 	public ModifyStudent(String da[],Socket socket) 
 	{
-		super("ĞŞ¸ÄÑ§ÉúĞÅÏ¢");
+		super("ä¿®æ”¹å­¦ç”Ÿä¿¡æ¯");
 		this.socket=socket;
 		try {
 			dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -36,15 +36,15 @@ public class ModifyStudent extends JFrame{
       
 		
 		this.setBounds(500, 100, 500, 500);
-		JButton b1=new JButton("È·¶¨");
-		JButton b2=new JButton("È¡Ïû");
+		JButton b1=new JButton("ç¡®å®š");
+		JButton b2=new JButton("å–æ¶ˆ");
 		JLabel jl1=new JLabel("sid");
-		JLabel jl2=new JLabel("µÇÂ¼ÃÜÂë");
-		JLabel jl3=new JLabel("ĞÕÃû");
-		JLabel jl4=new JLabel("³öÉúÈÕÆÚ");
+		JLabel jl2=new JLabel("ç™»å½•å¯†ç ");
+		JLabel jl3=new JLabel("å§“å");
+		JLabel jl4=new JLabel("å‡ºç”Ÿæ—¥æœŸ");
 		JLabel jl5=new JLabel("SSN");
-		JLabel jl6=new JLabel("Äê¼¶");
-		//JLabel jl7=new JLabel("ÔºÏµ");
+		JLabel jl6=new JLabel("å¹´çº§");
+		//JLabel jl7=new JLabel("é™¢ç³»");
 		JTextField tf1=new JTextField();
 		JTextField tf2=new JTextField();
 		JTextField tf3=new JTextField();
@@ -89,11 +89,11 @@ public class ModifyStudent extends JFrame{
 		b1.setBounds(180, 350, 60, 25);
 		b2.setBounds(250, 350, 60, 25);
 		
-		int i=0;//iÊÇµ±Ç°ĞÅÏ¢µÄĞòºÅ£¬ÓÃÀ´ÊµÏÖÉ¾³ıĞŞ¸ÄµÄ¶¨Î»
-		int j=0;//jÊÇÎªÁËµÃµ½´«»ØÀ´µÄÊı¾İ£¬ÒòÎªÊÇÓÃ#·Ö¿ªµÄÊı¾İ	
+		int i=0;//iæ˜¯å½“å‰ä¿¡æ¯çš„åºå·ï¼Œç”¨æ¥å®ç°åˆ é™¤ä¿®æ”¹çš„å®šä½
+		int j=0;//jæ˜¯ä¸ºäº†å¾—åˆ°ä¼ å›æ¥çš„æ•°æ®ï¼Œå› ä¸ºæ˜¯ç”¨#åˆ†å¼€çš„æ•°æ®	
        while(!da[j].equals(" ")){
     	   final int k=i;
-           // Í¨¹ı×Ö¶Î¼ìË÷
+           // é€šè¿‡å­—æ®µæ£€ç´¢
             sid  = da[j++];
        	    String password=da[j++];
             String name = da[j++];
@@ -113,7 +113,7 @@ public class ModifyStudent extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				int n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªĞŞ¸ÄÂğ?", "ÏûÏ¢¿ò", JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦ä¿®æ”¹å—?", "æ¶ˆæ¯æ¡†", JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					String sid1=tf1.getText().trim();
 					String password1= tf2.getText().trim();
@@ -122,7 +122,7 @@ public class ModifyStudent extends JFrame{
 					String ssn1= tf5.getText().trim();
 					String status1= tf6.getText().trim();
 				//	String depart1= tf7.getText().trim();			
-						String sql="update Student set sid='"+sid1+"',password='"+password1+"',name='"+name1+"',birthday='"+birthday1+"',ssn='"+ssn1+"',status='"+status1+"' where sid='"+sid+"'";   //SQLÓï¾ä
+						String sql="update Student set sid='"+sid1+"',password='"+password1+"',name='"+name1+"',birthday='"+birthday1+"',ssn='"+ssn1+"',status='"+status1+"' where sid='"+sid+"'";   //SQLè¯­å¥
 						try {
 							dos.writeUTF("33"+"#"+sql);
 							dos.flush();
@@ -130,12 +130,12 @@ public class ModifyStudent extends JFrame{
 					         System.out.println(success);
 					         if(success==0)
 					         {
-					        	 JOptionPane.showMessageDialog(null, "²Ù×÷Ê§°Ü");
+					        	 JOptionPane.showMessageDialog(null, "æ“ä½œå¤±è´¥");
 					        	 
 					         }
 					         else
 					         {	
-					        	 JOptionPane.showMessageDialog(null, "ĞŞ¸Ä³É¹¦");
+					        	 JOptionPane.showMessageDialog(null, "ä¿®æ”¹æˆåŠŸ");
 					         }
 						} catch (IOException e2) {
 							// TODO Auto-generated catch block
