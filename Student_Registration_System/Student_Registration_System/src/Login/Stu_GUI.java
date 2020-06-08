@@ -1,9 +1,10 @@
+  
 /*
- * @author À×ºÆ½à
+ * @author é›·æµ©æ´
  * @version 1.0
- * Ñ§Éú¿Í»§¶Ë´úÂë
+ * å­¦ç”Ÿå®¢æˆ·ç«¯ä»£ç 
  */
-
+package Login;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -27,10 +28,10 @@ public class Stu_GUI extends JFrame implements ActionListener {
 	public int windowsWidth;
 	public int windowsHeight;
 
-	public String user_id;// Ñ§ÉúÓÃ»§Ãû£¬¼´Ñ§ºÅ
-	public String password;// Ñ§ÉúÃÜÂë
+	public String user_id;// å­¦ç”Ÿç”¨æˆ·åï¼Œå³å­¦å·
+	public String password;// å­¦ç”Ÿå¯†ç 
 
-	private JButton jb1;// ¸ºÔğÆô¶¯Ñ§ÉúµÄÁ½¸öÓÃÀı£ºÑ¡¿ÎÓë²é¿´³É¼¨µ¥
+	private JButton jb1;// è´Ÿè´£å¯åŠ¨å­¦ç”Ÿçš„ä¸¤ä¸ªç”¨ä¾‹ï¼šé€‰è¯¾ä¸æŸ¥çœ‹æˆç»©å•
 	private JButton jb2;
 	private JPanel jp;
 	private JLabel title;
@@ -47,13 +48,13 @@ public class Stu_GUI extends JFrame implements ActionListener {
 			this.dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 			this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));
 		} catch (IOException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 
-		this.setTitle("Ñ§ÉúÑ¡¿ÎÏµÍ³");
+		this.setTitle("å­¦ç”Ÿé€‰è¯¾ç³»ç»Ÿ");
 
-		// ÉèÖÃ´°¿Ú´óĞ¡
+		// è®¾ç½®çª—å£å¤§å°
 		sys_width = Toolkit.getDefaultToolkit().getScreenSize().width;
 		sys_height = Toolkit.getDefaultToolkit().getScreenSize().height;
 		windowsWidth = 350;
@@ -61,16 +62,16 @@ public class Stu_GUI extends JFrame implements ActionListener {
 		this.setSize(windowsWidth, windowsHeight);
 		this.setBounds((sys_width - windowsWidth) / 2, (sys_height - windowsHeight) / 2, windowsWidth, windowsHeight);
 
-		// ²¼¾Ö
+		// å¸ƒå±€
 		this.setLayout(new GridLayout(2, 1));
 
-		// »¶Ó­Óï
-		title = new JLabel("»¶Ó­Ê¹ÓÃÑ§ÉúÑ¡¿ÎÏµÍ³£¡", JLabel.CENTER);
+		// æ¬¢è¿è¯­
+		title = new JLabel("æ¬¢è¿ä½¿ç”¨å­¦ç”Ÿé€‰è¯¾ç³»ç»Ÿï¼", JLabel.CENTER);
 		this.add(title);
 
-		// Á½¸ö¹¦ÄÜ
-		jb1 = new JButton("Ñ¡¿Î");
-		jb2 = new JButton("²é¿´³É¼¨µ¥");
+		// ä¸¤ä¸ªåŠŸèƒ½
+		jb1 = new JButton("é€‰è¯¾");
+		jb2 = new JButton("æŸ¥çœ‹æˆç»©å•");
 		jb1.addActionListener(this);
 		jb2.addActionListener(this);
 		jp = new JPanel();
@@ -84,14 +85,14 @@ public class Stu_GUI extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == jb1) { // Ñ¡¿Î¹¦ÄÜ
+		if (e.getSource() == jb1) { // é€‰è¯¾åŠŸèƒ½
 			/*
-			 * 1.ÅĞ¶Ïµ±Ç°·şÎñ¶ËÊÇ·ñ´¦ÓÚ¿ÉÒÔÑ¡¿ÎµÄ×´Ì¬ÄÚ 2.ÈôÒÑ¹Ø±Õ×¢²á£¬Ôòµ¯³ö¶Ô»°¿òÌáÊ¾´íÎó£¬»Øµ½Ñ§ÉúGUIµÄÊ×½çÃæ
-			 * 3.Èô¿ÉÒÔÑ¡¿Î£¬Ôò¹Ø±Õµ±Ç°½çÃæ£¬µ÷ÓÃ¶ş¼¶½çÃæµÄGUI£¬Ö´ĞĞÑ¡¿ÎµÄ¹¦ÄÜ
+			 * 1.åˆ¤æ–­å½“å‰æœåŠ¡ç«¯æ˜¯å¦å¤„äºå¯ä»¥é€‰è¯¾çš„çŠ¶æ€å†… 2.è‹¥å·²å…³é—­æ³¨å†Œï¼Œåˆ™å¼¹å‡ºå¯¹è¯æ¡†æç¤ºé”™è¯¯ï¼Œå›åˆ°å­¦ç”ŸGUIçš„é¦–ç•Œé¢
+			 * 3.è‹¥å¯ä»¥é€‰è¯¾ï¼Œåˆ™å…³é—­å½“å‰ç•Œé¢ï¼Œè°ƒç”¨äºŒçº§ç•Œé¢çš„GUIï¼Œæ‰§è¡Œé€‰è¯¾çš„åŠŸèƒ½
 			 */
-			// ²¹³ä£ºÖ´ĞĞÑ¡¿ÎÓÃÀı
-		} else if (e.getSource() == jb2) { // ²é¿´³É¼¨µ¥
-			// ²¹³ä£ºÖ´ĞĞ²é¿´³É¼¨µ¥ÓÃÀı
+			// è¡¥å……ï¼šæ‰§è¡Œé€‰è¯¾ç”¨ä¾‹
+		} else if (e.getSource() == jb2) { // æŸ¥çœ‹æˆç»©å•
+			// è¡¥å……ï¼šæ‰§è¡ŒæŸ¥çœ‹æˆç»©å•ç”¨ä¾‹
 			try {
 				ViewReportCardUI ui = new ViewReportCardUI(user_id, password, socket);
 			} catch (IOException e1) {
