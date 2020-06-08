@@ -1,7 +1,7 @@
 /*
- * @author À×ºÆ½à
+ * @author é›·æµ©æ´
  * @version 1.0
- * ×¢²áÔ±¿Í»§¶Ë´úÂë
+ * æ³¨å†Œå‘˜å®¢æˆ·ç«¯ä»£ç 
  */
 package Login;
 
@@ -28,14 +28,14 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 	private int windowsWidth;
 	private int windowsHeight;
 	
-	private JButton jb1;//¸ºÔğ×¢²áÔ±µÄ4¸ö¹¦ÄÜ£ºÎ¬»¤Ñ§Éú/½ÌÊÚĞÅÏ¢¡¢´ò¿ª/¹Ø±Õ×¢²á
+	private JButton jb1;//è´Ÿè´£æ³¨å†Œå‘˜çš„4ä¸ªåŠŸèƒ½ï¼šç»´æŠ¤å­¦ç”Ÿ/æ•™æˆä¿¡æ¯ã€æ‰“å¼€/å…³é—­æ³¨å†Œ
 	private JButton jb2;
 	private JButton jb3;
 	private JButton jb4;
 	private JPanel jp;
 	private JLabel title;
 	
-	//¸ºÔğÓë·şÎñÆ÷Í¨ĞÅµÄsocket£¬ÒÑÔÚ¹¹Ôìº¯ÊıÖĞ³õÊ¼»¯
+	//è´Ÿè´£ä¸æœåŠ¡å™¨é€šä¿¡çš„socketï¼Œå·²åœ¨æ„é€ å‡½æ•°ä¸­åˆå§‹åŒ–
 	public Socket socket;
 	public DataInputStream dis;
 	public DataOutputStream dos;
@@ -48,12 +48,12 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 			this.dos = new DataOutputStream(
 	                new BufferedOutputStream(socket.getOutputStream()));
 		} catch (IOException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
-		this.setTitle("×¢²áÔ±¹ÜÀí½çÃæ");
+		this.setTitle("æ³¨å†Œå‘˜ç®¡ç†ç•Œé¢");
 		
-		//ÉèÖÃ´°¿Ú´óĞ¡
+		//è®¾ç½®çª—å£å¤§å°
 		sys_width = Toolkit.getDefaultToolkit().getScreenSize().width;
 	    sys_height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	    windowsWidth = 350;
@@ -62,16 +62,16 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 	    this.setBounds((sys_width- windowsWidth) / 2,
                 (sys_height - windowsHeight) / 2, windowsWidth, windowsHeight);
 		
-	    //²¼¾Ö
+	    //å¸ƒå±€
 	    this.setLayout(new GridLayout(4,1));
 	    
-	    //»¶Ó­Óï
-	    title = new JLabel("»¶Ó­»ØÀ´£¬×¢²áÔ±",JLabel.CENTER);
+	    //æ¬¢è¿è¯­
+	    title = new JLabel("æ¬¢è¿å›æ¥ï¼Œæ³¨å†Œå‘˜",JLabel.CENTER);
 	    this.add(title);
 	    
-	    //¿ªÆôÓë¹Ø±Õ×¢²á
-	    jb1 = new JButton("¿ªÆô×¢²á");
-	    jb2 = new JButton("¹Ø±Õ×¢²á");
+	    //å¼€å¯ä¸å…³é—­æ³¨å†Œ
+	    jb1 = new JButton("å¼€å¯æ³¨å†Œ");
+	    jb2 = new JButton("å…³é—­æ³¨å†Œ");
 	    jb1.addActionListener(this);
 	    jb2.addActionListener(this);
 	    jp = new JPanel();
@@ -80,13 +80,13 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 	    jp.add(jb2);
 	    this.add(jp);
 	    
-	    //Î¬»¤Ñ§ÉúĞÅÏ¢
-	    jb3 = new JButton("Î¬»¤Ñ§ÉúĞÅÏ¢");
+	    //ç»´æŠ¤å­¦ç”Ÿä¿¡æ¯
+	    jb3 = new JButton("ç»´æŠ¤å­¦ç”Ÿä¿¡æ¯");
 	    jb3.addActionListener(this);
 	    this.add(jb3);
 	    
-	    //Î¬»¤ÀÏÊ¦ĞÅÏ¢
-	    jb4 = new JButton("Î¬»¤½ÌÊÚĞÅÏ¢");
+	    //ç»´æŠ¤è€å¸ˆä¿¡æ¯
+	    jb4 = new JButton("ç»´æŠ¤æ•™æˆä¿¡æ¯");
 	    jb4.addActionListener(this);
 	    this.add(jb4);
 	    
@@ -95,14 +95,20 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource()==jb1) {  //¿ªÆô×¢²á°´Å¥
-			//²¹³ä£ºÓë·şÎñÆ÷½»»¥£¬½«·şÎñÆ÷µÄ×´Ì¬¸ÄÎª¿ª·Å×¢²áµÄ×´Ì¬
-		}else if(e.getSource()==jb2){  //¹Ø±Õ×¢²á°´Å¥
-			//²¹³ä£ºÖ´ĞĞ¹Ø±Õ×¢²áÓÃÀıµÄ¹¦ÄÜ£¬ÖØµã±àĞ´
-		}else if (e.getSource()==jb3) {  //Î¬»¤Ñ§ÉúĞÅÏ¢
-			//²¹³ä£ºÖ´ĞĞÎ¬»¤Ñ§ÉúĞÅÏ¢ÓÃÀı
-		}else if(e.getSource()==jb4) {   //Î¬»¤½ÌÊÚĞÅÏ¢
-			//²¹³ä£ºÖ´ĞĞÎ¬»¤½ÌÊÚĞÅÏ¢ÓÃÀı
+		if(e.getSource()==jb1) {  //å¼€å¯æ³¨å†ŒæŒ‰é’®
+			//è¡¥å……ï¼šä¸æœåŠ¡å™¨äº¤äº’ï¼Œå°†æœåŠ¡å™¨çš„çŠ¶æ€æ”¹ä¸ºå¼€æ”¾æ³¨å†Œçš„çŠ¶æ€
+		}else if(e.getSource()==jb2){  //å…³é—­æ³¨å†ŒæŒ‰é’®
+			//è¡¥å……ï¼šæ‰§è¡Œå…³é—­æ³¨å†Œç”¨ä¾‹çš„åŠŸèƒ½ï¼Œé‡ç‚¹ç¼–å†™
+		}else if (e.getSource()==jb3) {  //ç»´æŠ¤å­¦ç”Ÿä¿¡æ¯
+			//è¡¥å……ï¼šæ‰§è¡Œç»´æŠ¤å­¦ç”Ÿä¿¡æ¯ç”¨ä¾‹
+			MaintainStudent mp=new MaintainStudent(socket);
+			dispose();
+			//æˆ–è€…this.dispose(),ä¸ç¡®å®šå“ªä¸ªæ˜¯èƒ½ç”¨çš„ï¼Œæœ‰ä¸€ä¸ªå¯ä»¥ï¼Œä¸€ä¸ªä¸å¯ä»¥
+		}else if(e.getSource()==jb4) {   //ç»´æŠ¤æ•™æˆä¿¡æ¯
+			//è¡¥å……ï¼šæ‰§è¡Œç»´æŠ¤æ•™æˆä¿¡æ¯ç”¨ä¾‹
+			MaintainProfessor mp=new MaintainProfessor(socket);
+			dispose();
+			//åŒä¸Š
 		}
 	}
 	
