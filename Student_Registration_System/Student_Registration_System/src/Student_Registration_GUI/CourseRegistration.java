@@ -37,6 +37,17 @@ public class CourseRegistration {
 	}
 	
 	void retToUpLevel() {
+		try {
+			DataOutputStream dos = new DataOutputStream(
+					new BufferedOutputStream(socket.getOutputStream()));
+			DataInputStream dis = new DataInputStream(
+	                new BufferedInputStream(socket.getInputStream()));
+			dos.writeUTF("1a");
+			dos.flush();
+			dis.readUTF();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		frame.dispose();
 		student.setVisible(true);
 	}

@@ -113,6 +113,7 @@ class SingleServer implements Runnable {
                 		dos.flush();
                 	}else if(request.toCharArray()[1]=='2') {
                 		if(SRSServer.isRegistration_time == 1) {
+                			SRSServer.isRegistration++; //增加正在注册的人数
                 			dos.writeChars("2");
                 			dos.flush();
                 		}else {
@@ -149,6 +150,8 @@ class SingleServer implements Runnable {
                 	}else if(request.toCharArray()[1]=='9') {
     					String id = dis.readUTF();
     					student.submitDeleteSchedule(id, dos);
+    				}else if(request.toCharArray()[1]=='a') {
+    					student.backStudRegistration();
     				}else if (request.charAt(1) == '8')
 						        student.ViewGrades();
                 	//补充：此处添加else if或是改成switch，补充完善学生角色的其他用例
