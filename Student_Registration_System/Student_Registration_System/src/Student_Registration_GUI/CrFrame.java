@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+
 class CrFrame extends JFrame{
 	private CourseRegistration cr;
 	private JMenuBar menuBar;
@@ -41,7 +42,7 @@ class CrFrame extends JFrame{
 	 * 窗体的名字
 	 */
 	private void initFrame() {
-		setBounds(50, 50, 500, 600);
+		setBounds(600, 150, 500, 600);
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         menu = new JMenu("课表");
@@ -249,7 +250,7 @@ class CrFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String item = (String) comboBox.getSelectedItem();
 				String courseName = "";
-				courseName = item;//从item中提取出课程名字
+				courseName = item.split(" ")[0];//从item中提取出课程名字
 				cr.selectCourseOffering(courseName, false);
 			}
 		});
@@ -258,7 +259,7 @@ class CrFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String item = (String) comboBox.getSelectedItem();
 				String courseName = "";
-				courseName = item;//从item中提取出课程名字
+				courseName = item.split(" ")[0];//从item中提取出课程名字
 				cr.selectCourseOffering(courseName, true);
 			}
 		});
@@ -277,7 +278,9 @@ class CrFrame extends JFrame{
 		butSubmit.setText("提交课表");
 		butSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cr.submitSchedule();
+				if(cr.submitSchedule()) {
+					butSave.setEnabled(false);
+				}
 			}
 		});
 		
@@ -306,7 +309,7 @@ class CrFrame extends JFrame{
 		panel1.add(new JLabel("主课程"));
 		panel1.add(new JLabel());
 		panel1.add(but1 = new JButton());
-		but1.setText(main_lesson.get(0));
+		but1.setText(main_lesson.get(0).split(" ")[0]);
 		but1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedButTitle = but1.getText();
@@ -316,7 +319,7 @@ class CrFrame extends JFrame{
 		if(!but1.getText().equals("")) label1.setText(state);
 		panel1.add(label1);
 		panel1.add(but2 = new JButton());
-		but2.setText(main_lesson.get(1));
+		but2.setText(main_lesson.get(1).split(" ")[0]);
 		but2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedButTitle = but2.getText();
@@ -326,7 +329,7 @@ class CrFrame extends JFrame{
 		if(!but2.getText().equals("")) label2.setText(state);
 		panel1.add(label2);
 		panel1.add(but3 = new JButton());
-		but3.setText(main_lesson.get(2));
+		but3.setText(main_lesson.get(2).split(" ")[0]);
 		but3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedButTitle = but3.getText();
@@ -336,7 +339,7 @@ class CrFrame extends JFrame{
 		if(!but3.getText().equals("")) label3.setText(state);
 		panel1.add(label3);
 		panel1.add(but4 = new JButton());
-		but4.setText(main_lesson.get(3));
+		but4.setText(main_lesson.get(3).split(" ")[0]);
 		but4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedButTitle = but4.getText();
@@ -348,7 +351,7 @@ class CrFrame extends JFrame{
 		panel1.add(new JLabel("备选课程"));
 		panel1.add(new JLabel());
 		panel1.add(but5 = new JButton());
-		but5.setText(alt_lesson.get(0));
+		but5.setText(alt_lesson.get(0).split(" ")[0]);
 		but5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedButTitle = but5.getText();
@@ -358,7 +361,7 @@ class CrFrame extends JFrame{
 		if(!but5.getText().equals("")) label5.setText(state);
 		panel1.add(label5);
 		panel1.add(but6 = new JButton());
-		but6.setText(alt_lesson.get(1));
+		but6.setText(alt_lesson.get(1).split(" ")[0]);
 		but6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				selectedButTitle = but6.getText();
@@ -419,7 +422,7 @@ class CrFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String item = (String) comboBox.getSelectedItem();
 				String courseName = "";
-				courseName = item;//从item中提取出课程名字
+				courseName = item.split(" ")[0];//从item中提取出课程名字
 				cr.selectCourseOffering(courseName, false);
 			}
 		});
@@ -428,7 +431,7 @@ class CrFrame extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				String item = (String) comboBox.getSelectedItem();
 				String courseName = "";
-				courseName = item;//从item中提取出课程名字
+				courseName = item.split(" ")[0];//从item中提取出课程名字
 				cr.selectCourseOffering(courseName, true);
 			}
 		});
@@ -493,6 +496,7 @@ class CrFrame extends JFrame{
 		butDelSchedule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e){
 				cr.submitDeleteSchedule();
+				butDelSchedule.setEnabled(false);
 			}
 		});
 		

@@ -100,11 +100,24 @@ public class Student {
 				dos.flush();
 			}else {
 				ArrayList<String> cofs = new ArrayList<String>();
-				sql = "select name from course";
+				sql = "select * from course";
 				pst = conn.prepareStatement(sql);
 				rs = pst.executeQuery();
 				while(rs.next()) {
-					cofs.add(rs.getString("name"));
+					String strName = rs.getString("name");
+					String strPre = rs.getString("prerequisite");
+					if(strPre != null) {
+						String sql2 = "select name from course where cid=?";
+						pst = conn.prepareStatement(sql2);
+						pst.setString(1, strPre);
+						ResultSet rs2 = pst.executeQuery();
+						rs2.next();
+						strPre = rs2.getString("name");
+						rs2.close();
+					}
+					String strTime = rs.getString("timeslot");
+					String strNum = rs.getString("number");
+					cofs.add(strName+"  前导:"+(strPre==null?"null":strPre)+"  时间:"+strTime+"  人数:"+strNum);
 				}
 				dos.writeChars("2");
 				dos.writeInt(cofs.size());
@@ -152,11 +165,24 @@ public class Student {
 				}
 				dos.writeUTF(rs.getString("status"));
 				ArrayList<String> cofs = new ArrayList<String>();
-				sql = "select name from course";
+				sql = "select * from course";
 				pst = conn.prepareStatement(sql);
 				rs = pst.executeQuery();
 				while(rs.next()) {
-					cofs.add(rs.getString("name"));
+					String strName = rs.getString("name");
+					String strPre = rs.getString("prerequisite");
+					if(strPre != null) {
+						String sql2 = "select name from course where cid=?";
+						pst = conn.prepareStatement(sql2);
+						pst.setString(1, strPre);
+						ResultSet rs2 = pst.executeQuery();
+						rs2.next();
+						strPre = rs2.getString("name");
+						rs2.close();
+					}
+					String strTime = rs.getString("timeslot");
+					String strNum = rs.getString("number");
+					cofs.add(strName+"  前导:"+(strPre==null?"null":strPre)+"  时间:"+strTime+"  人数:"+strNum);
 				}
 				dos.writeInt(cofs.size());
 				for(int i=0;i<cofs.size();i++) {
@@ -463,12 +489,16 @@ public class Student {
 		}
 	}
 	/*
-	 * 推出学生注册
+	 * 退出学生注册
 	 */
 	void backStudRegistration() {
 		SRSServer.isRegistration--;
-		dos.writeUTF("success");
-		dos.flush();
+		try {
+			dos.writeUTF("success");
+			dos.flush();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void ViewGrades() throws IOException { 
