@@ -9,6 +9,7 @@
 package Server;
 import java.io.*;
 import java.net.*;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -162,9 +163,220 @@ class SingleServer implements Runnable {
                 	if(request.toCharArray()[1]=='0') {  //请求登录
                 		String id = dis.readUTF();
                 		String pw = dis.readUTF();
+                		idString = id;
+                		pwString = pw;
                 		String result=professor.login(id, pw);
                 		dos.writeUTF(result);
                 		dos.flush();
+                	}
+                	else if(request.toCharArray()[1]=='1')//检查是否在注册时间之内
+                	{
+                		if(SRSServer.isRegistration_time==0) //0表示不在注册时间，则返回消息给客户端
+	                	{
+	                		dos.writeUTF(new String("当前不是注册时间！"));
+	                        dos.flush();
+	                	}
+	                	else
+	                	{
+	                		dos.writeUTF(new String("当前是注册时间"));
+	                        dos.flush();
+	                	}
+                	}
+                	else if(request.toCharArray()[1]=='2')//检索有资格教授的课程
+                	{
+                		System.out.println("检索有资格教授的课程");
+                		ResultSet rs=professor.findQualifiedCourses();//检索有资格教授的课程，检索pid为空的即可
+	                	int i=0;
+	                	while (rs.next())
+	                		i++;
+	                	
+	                	dos.writeInt(i+1);//告诉客户端有几行,包括属性名
+	                	dos.flush();
+	                	System.out.print("我发了"+i+"行");
+	                	
+	                	rs.beforeFirst();//光标移动到第一行之前
+	                	dos.writeUTF("cid");            
+	                	dos.writeUTF("name");
+	                	dos.writeUTF("credit");
+	                	dos.writeUTF("timeslot");
+	                	dos.flush();
+	                	while (rs.next()) {//返回给客户端，只能看到课程cid，课程名称name，学分credit和上课时间timeslot
+	            			System.out.print("cid: " + rs.getString("cid"));
+	            			System.out.print(" name: " + rs.getString("name"));
+	            			System.out.print(" credit: " + rs.getString("credit"));
+	            			System.out.println(" timeslot: " + rs.getString("timeslot"));
+	            			dos.writeUTF(rs.getString("cid"));
+	            			dos.writeUTF(rs.getString("name"));
+	            			dos.writeUTF(rs.getString("credit"));
+	            			dos.writeUTF(rs.getString("timeslot"));
+	            			dos.flush();
+	            		}
+                	}
+                	else if(request.toCharArray()[1]=='3')//检索教授过的课程
+                	{
+                		System.out.println("检索教授过的课程");
+                		String pid=dis.readUTF();//要检索的教授的id
+	                	System.out.println(pid);
+	                	
+	                	ResultSet rs=professor.preTaughtCourses(pid);//检索教授过的课程
+	                	
+	                	int i=0;
+	                	while (rs.next())
+	                		i++;
+	                	
+	                	dos.writeInt(i+1);//告诉客户端有几行,包括属性名
+	                	dos.flush();
+	                	//System.out.println("22发了"+i+"行");
+	                	
+	                	rs.beforeFirst();//光标移动到第一行之前
+	                	//dos.writeUTF("cid    cname    credit    semester");
+	                	dos.writeUTF("cid");            
+	                	dos.writeUTF("cname");
+	                	dos.writeUTF("credit");
+	                	dos.writeUTF("semester");
+	                	
+	                	dos.flush();
+	                	while (rs.next()) {//返回给客户端，只能看到课程cid，课程名称name，学分credit,开设学期semester
+	            			System.out.print("cid: " + rs.getString("cid"));
+	            			System.out.print(" name: " + rs.getString("cname"));
+	            			System.out.print(" credit: " + rs.getString("credit"));
+	            			System.out.println(" semester: " + rs.getString("semester"));
+	            			
+	            			dos.writeUTF(rs.getString("cid"));
+	            			dos.writeUTF(rs.getString("cname"));
+	            			dos.writeUTF(rs.getString("credit"));
+	            			dos.writeUTF(rs.getString("semester"));
+	            			dos.flush();
+	            		}
+                		
+                	}
+            
+                	else if(request.toCharArray()[1]=='4')//教授取消选择授课，人数减一
+                	{
+                		
+                		System.out.println("服务器人数减一");
+                		SRSServer.isRegistration--;
+                	}
+                	else if(request.toCharArray()[1]=='a')//判断选课是否冲突
+                	{
+                		System.out.println("服务器查询是否有冲突的教授是"+idString);
+                		String timeslot=dis.readUTF();//选择课程的时间，判断是否冲突
+                		ResultSet rs=professor.isConflict(idString,timeslot);//调用函数返回冲突课程
+                		
+                		if(rs.next())//有值说明有冲突，使用next很重要
+                		{
+                			System.out.println("服务器判断有冲突");
+                			dos.writeUTF("有冲突");
+                			dos.flush();
+                			
+                			int i=1;
+    	                	while (rs.next())
+    	                		i++;
+    	                	
+    	                	dos.writeInt(i+1);//告诉客户端，即告诉mybuttoneditor中的按钮监听函数，有几行,包括属性名
+    	                	dos.flush();
+    	                	rs.beforeFirst();//光标移动到第一行之前
+    	                	dos.writeUTF("cid");            
+    	                	dos.writeUTF("name");
+    	                	dos.writeUTF("credit");
+    	                	dos.writeUTF("timeslot");
+    	                	dos.flush();
+    	                	while (rs.next()) {//返回给客户端
+    	            			dos.writeUTF(rs.getString("cid"));
+    	            			dos.writeUTF(rs.getString("name"));
+    	            			dos.writeUTF(rs.getString("credit"));
+    	            			dos.writeUTF(rs.getString("timeslot"));
+    	            			dos.flush();
+    	            		}
+                		}
+                		else//没有值说明没有冲突
+                		{	
+                			dos.writeUTF("没有冲突");
+                			dos.flush();
+                		}
+                		
+                	}
+                	else if(request.toCharArray()[1]=='b')//检索已经选择的课程
+                	{
+                		System.out.println("检索已经选择的课程");
+                		String pid=dis.readUTF();//检索pid已经选择的课程
+	                	ResultSet rs=professor.selectedCourse(pid);//检索教授过的课程
+	                	
+	                	int i=0;
+	                	while (rs.next())
+	                		i++;
+	                	
+	                	dos.writeInt(i+1);//告诉客户端有几行,包括属性名
+	                	dos.flush();
+	                	//System.out.println("22发了"+i+"行");
+	                	
+	                	rs.beforeFirst();//光标移动到第一行之前
+	                	//dos.writeUTF("cid    cname    credit    semester");
+	                	dos.writeUTF("cid");            
+	                	dos.writeUTF("name");
+	                	dos.writeUTF("credit");
+	                	dos.writeUTF("timeslot");
+	                	
+	                	dos.flush();
+	                	while (rs.next()) {
+	            			System.out.print("cid: " + rs.getString("cid"));
+	            			System.out.print(" name: " + rs.getString("name"));
+	            			System.out.print(" credit: " + rs.getString("credit"));
+	            			System.out.println(" timeslot: " + rs.getString("timeslot"));
+	            			
+	            			dos.writeUTF(rs.getString("cid"));
+	            			dos.writeUTF(rs.getString("name"));
+	            			dos.writeUTF(rs.getString("credit"));
+	            			dos.writeUTF(rs.getString("timeslot"));
+	            			dos.flush();
+	            		}
+                		
+                	}
+                	else if(request.toCharArray()[1]=='c')//退课，置数据库相应数据行的pid为null
+                	{
+                		System.out.println("退课");
+                		String cid=dis.readUTF();//检索cid课程并置其pid为null
+	                	professor.dropCourse(cid);
+                	}
+                	else if(request.toCharArray()[1]=='8')//选课，置数据库相应数据行的pid为当前教授id
+                	{
+                		System.out.println("选课");
+                		String cid=dis.readUTF();//检索cid课程
+                		String pid=dis.readUTF();//置其教授id为pid
+	                	professor.chooseCourse(cid,pid);//选课函数
+                	}
+                	else if(request.toCharArray()[1]=='9')//查询当前学期用于标签显示
+                	{
+                		System.out.println("查询学期");
+	                	String semester=professor.inquireSemester();//查询学期
+	                	System.out.println("服务器收到当前学期："+semester);
+	                	dos.writeUTF(semester);
+	                	dos.flush();
+                	}
+                	else if(request.toCharArray()[1]=='x')//教授取消选择授课，人数减一
+                	{
+                		System.out.println("服务器当前人数："+SRSServer.isRegistration);
+                		System.out.println("服务器人数加一");
+                		SRSServer.isRegistration++;
+                		dos.writeInt(SRSServer.isRegistration);
+                		dos.flush();
+                	}
+                	else if(request.toCharArray()[1]=='y')//查询教授名称
+                	{
+                		System.out.println("查询教授名称");
+                		String pid=dis.readUTF();//检索pid的名字
+	                	String pname=professor.inquirePname(pid);//查询姓名
+	                	System.out.println("服务器收到当前学期："+pname);
+	                	dos.writeUTF(pname);
+	                	dos.flush();
+                	}
+                	else if(request.toCharArray()[1]=='z')//检索是否有被取消的课程
+                	{
+                		System.out.println("检索是否有被取消的课程");
+                		String pid=dis.readUTF();//检索pid是否有被取消的课程
+	                	String cancelinfor=professor.isConceledCourse(SRSServer.canceled_course,pid);
+	                	dos.writeUTF(cancelinfor);
+	                	dos.flush();
                 	}
                   else if (request.charAt(1) == '5')
 						        professor.GetCourse();

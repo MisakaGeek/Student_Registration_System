@@ -10,6 +10,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Professor {
 	String id;
@@ -177,7 +179,172 @@ public class Professor {
 			rs = pst.executeUpdate();
 		}
 	}
+	 public ResultSet findQualifiedCourses() {//检索有资格教授的课程，直接検索course表，里面全是这学期开的课程，即教授有资格教授的课程，但是要除去id是自己的
+			// TODO Auto-generated method stub
 
+	    	String sql;
+			try {
+				stmt = conn.createStatement();
+				sql = "select * from course where pid =' ' or pid ='null' or pid ='NULL' or pid is null";//查询有资格教授的课程，就是pid为空的那些，，但是显示原因，只能用空格，pid不是自己的就是别人的
+				rs = stmt.executeQuery(sql);//返回查询结果
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();//数据库无法通信的代码稍后再写
+			}
+			return rs;
+		}
+	    public ResultSet preTaughtCourses(String pid) {//检索以前教授过的课程，参数为教授的id
+	    	String sql;
+			try {
+				
+				stmt = conn.createStatement(); 
+				sql = "select cid,cname,credit,semester from grade where pid='"+pid+"' group by pid";//查询语句
+				rs = stmt.executeQuery(sql);//返回查询结果
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();//数据库无法通信的代码稍后再写
+			}
+			return rs;
+	    }
+	    
+	
+	public  ResultSet isConflict(String pid,String timeslot) {//判断是否存在冲突并返回冲突课程，参数是教授pid和冲突时间，这里直接用这个类的id是null，不知道为啥
+		String sql=null;
+		System.out.println("进入判断冲突函数isConflict()");
+		try {
+			System.out.println("要判断冲突的时间："+timeslot+" 要判断冲突的教授："+pid);
+			stmt = conn.createStatement();
+			sql = "select cid,name,credit,timeslot from course where pid='"+pid+"' and timeslot='"+timeslot+"' ";//查询冲突
+			rs = stmt.executeQuery(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		
+		}
+		return rs;//如果为空说明没冲突，不为空说明有冲突
+	}
+	public ResultSet selectedCourse(String pid) {//查询已经选择的课程，参数是教授id
+		String sql;
+		try {
+			stmt = conn.createStatement(); 
+			System.out.println("查询"+pid+"已经选择的课程");
+			sql = "select cid,name,credit,timeslot from course where pid='"+pid+"' ";
+			rs = stmt.executeQuery(sql);//返回查询结果
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();//数据库无法通信的代码稍后再写
+		}
+		return rs;
+
+	}
+	public void dropCourse(String cid)//退课，置相应cid数据的pid为null
+	{
+		String sql;
+		try {
+			stmt = conn.createStatement(); 
+			System.out.println("退cid为："+cid+"的课程");
+			sql = "update course set pid = null where cid = '"+cid+"' ";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();//数据库无法通信的代码稍后再写
+		}
+	}
+	public void chooseCourse(String cid,String pid)//选课，置所选课程（cid）的教授（pid）为参数pid的值
+	{
+		String sql;
+		try {
+			stmt = conn.createStatement(); 
+			System.out.println("教授："+pid+"选课程号为："+cid+"的课程");
+			sql = "update course set pid = '"+pid+"' where cid = '"+cid+"' ";
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();//数据库无法通信的代码稍后再写
+		}
+	}
+	
+	public String inquireSemester()//查询当前学期
+	{
+		String sql;
+		try {
+			System.out.println("进入inquireSemester()函数");
+			stmt = conn.createStatement(); 
+			sql = "select semester from course";
+			rs = stmt.executeQuery(sql);//返回查询结果
+			rs.next();
+			return rs.getString("semester");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();//数据库无法通信的代码稍后再写
+		}
+		return null;
+	}
+	
+	public String inquirePname(String pid)//查询当前学期
+	{
+		String sql;
+		try {
+			System.out.println("进入inquirePname()函数");
+			stmt = conn.createStatement(); 
+			sql = "select name from professor where pid='"+pid+"'";
+			rs = stmt.executeQuery(sql);//返回查询结果
+			rs.next();
+			return rs.getString("name");
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();//数据库无法通信的代码稍后再写
+		}
+		return null;
+	}
+	public String isConceledCourse(List<String> canceled_course,String pid)//检索是否有被取消的课程，置取消的课程pid为空
+	{
+		String sql,sql1;
+		try {
+			System.out.println("进入isConceledCourse()函数");
+			stmt = conn.createStatement(); 
+			sql = "select cid from course where pid='"+pid+"'";//将教授pid选择的课程选出来
+			System.out.println(sql);
+			rs = stmt.executeQuery(sql);//返回查询结果
+			System.out.println("检测错误3");
+			List<String> pidcanceledcourse=new ArrayList<String>();//教授pid被取消的课程
+			int index=0;//list索引
+			System.out.println("检测错误1");
+			while(rs.next())
+			{
+				for(int i=0;i<canceled_course.size();i++)
+				if( rs.getString("cid").equals(canceled_course.get(i)) )
+				{
+					pidcanceledcourse.add(canceled_course.get(i));
+				}
+			}
+			System.out.println("检测错误2");
+			System.out.println(pidcanceledcourse.size());
+			if(pidcanceledcourse.size()!=0)	{
+				for(int k=0;k<pidcanceledcourse.size();k++)//取消的课程pid置为空
+				{
+					sql1 = "update course set pid = null where cid = '"+pidcanceledcourse.get(k)+"' ";
+					stmt.executeUpdate(sql1);
+				}
+				String infor=new String("您所选择的"+pidcanceledcourse.size()+"门课程：课程号分别为：");
+				for(int j=0;j<pidcanceledcourse.size();j++)//infor最后保存pid和它所有取消的课程
+				{
+					infor=infor+" "+pidcanceledcourse.get(j);
+				}
+				infor=infor+"的课程由于选课人数不足三人取消授课，请及时前往选择授课界面查看，以免影响您的授课";
+				System.out.println("isConceledCourse（）返回信息："+infor);
+				return infor;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();//数据库无法通信的代码稍后再写
+		}
+		String infor=new String("没有取消的课程");
+		System.out.println("没有取消的课程");
+		return infor;
+	}
 	public void close() {
 		try {
 			if (rs != null) {
