@@ -42,6 +42,7 @@ class CrFrame extends JFrame{
 	 * 窗体的名字
 	 */
 	private void initFrame() {
+		setTitle(cr.getStudentId());
 		setBounds(600, 150, 500, 600);
         menuBar = new JMenuBar();
         setJMenuBar(menuBar);
