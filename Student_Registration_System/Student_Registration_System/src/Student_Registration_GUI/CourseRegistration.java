@@ -320,12 +320,10 @@ public class CourseRegistration {
 				frame.showMessageDialog("已有保存或提交的课表");
 			}else if(res == '2') {
 				schedule = new Schedule();
-				ArrayList<String> main_lessonInfo = new ArrayList<String>();
-				ArrayList<String> alternate_lessonInfo = new ArrayList<String>();
 				schedule.main_lesson = new ArrayList<String>();
 				schedule.alternate_lesson = new ArrayList<String>();
-				for(int i=0;i<4;i++) main_lessonInfo.add("");
-				for(int i=0;i<2;i++) alternate_lessonInfo.add("");
+				for(int i=0;i<4;i++) schedule.main_lesson.add("");
+				for(int i=0;i<2;i++) schedule.alternate_lesson.add("");
 				int num = dis.readInt(); //可选课程的数量
 				ArrayList<String> cofs = new ArrayList<String>();
 				for(int i=0;i<num;i++) {
