@@ -83,7 +83,8 @@ public class CourseRegistration {
 		frame.showMessageDialog("保存课表成功");*/
 		///////////////////////////////////
 	}
-	void submitSchedule() {
+	boolean submitSchedule() {
+		boolean success = false;
 		try {
 			DataOutputStream dos = new DataOutputStream(
 					new BufferedOutputStream(socket.getOutputStream()));
@@ -105,6 +106,7 @@ public class CourseRegistration {
 			if(res == '1') {
 				//把gui中的课程状态改变一下
 				frame.setAllSelectedCourseState("enrolled_in");
+				success = true;
 				frame.showMessageDialog("提交课表成功");
 			}else if(res == '2') {
 				String course, pre;
@@ -124,6 +126,7 @@ public class CourseRegistration {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		return success;
 		
 		//测试//////////////////////////////////////////
 		/*char res = '1';
@@ -277,7 +280,7 @@ public class CourseRegistration {
 				DataInputStream dis = new DataInputStream(
 		                new BufferedInputStream(socket.getInputStream()));
 				//输出数据
-				dos.writeChars("19");
+				dos.writeUTF("19");
 				dos.writeUTF(student.user_id);
 				dos.flush();
 				//接收反馈信息
@@ -317,10 +320,12 @@ public class CourseRegistration {
 				frame.showMessageDialog("已有保存或提交的课表");
 			}else if(res == '2') {
 				schedule = new Schedule();
+				ArrayList<String> main_lessonInfo = new ArrayList<String>();
+				ArrayList<String> alternate_lessonInfo = new ArrayList<String>();
 				schedule.main_lesson = new ArrayList<String>();
 				schedule.alternate_lesson = new ArrayList<String>();
-				for(int i=0;i<4;i++) schedule.main_lesson.add("");
-				for(int i=0;i<2;i++) schedule.alternate_lesson.add("");
+				for(int i=0;i<4;i++) main_lessonInfo.add("");
+				for(int i=0;i<2;i++) alternate_lessonInfo.add("");
 				int num = dis.readInt(); //可选课程的数量
 				ArrayList<String> cofs = new ArrayList<String>();
 				for(int i=0;i<num;i++) {
