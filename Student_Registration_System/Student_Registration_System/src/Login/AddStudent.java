@@ -17,8 +17,6 @@ import java.sql.Statement;
 
 import javax.swing.*;
 
-import com.mysql.cj.protocol.Resultset;
-import com.mysql.cj.xdevapi.Result;
 
 public class AddStudent extends JFrame{
 	private Socket socket;
@@ -26,7 +24,7 @@ public class AddStudent extends JFrame{
 	private DataOutputStream dos;
 	public AddStudent(Socket socket ) 
 	{
-		super("Ìí¼ÓÑ§ÉúĞÅÏ¢");
+		super("æ·»åŠ å­¦ç”Ÿä¿¡æ¯");
 		this.socket=socket;
 		try {
 			dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
@@ -35,19 +33,17 @@ public class AddStudent extends JFrame{
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-
-      
 		
 		this.setBounds(500, 100, 500, 500);
-		JButton b1=new JButton("È·¶¨");
-		JButton b2=new JButton("È¡Ïû");
+		JButton b1=new JButton("ç¡®å®š");
+		JButton b2=new JButton("å–æ¶ˆ");
 		JLabel jl1=new JLabel("sid");
-		JLabel jl2=new JLabel("µÇÂ¼ÃÜÂë");
-		JLabel jl3=new JLabel("ĞÕÃû");
-		JLabel jl4=new JLabel("³öÉúÈÕÆÚ");
+		JLabel jl2=new JLabel("ç™»å½•å¯†ç ");
+		JLabel jl3=new JLabel("å§“å");
+		JLabel jl4=new JLabel("å‡ºç”Ÿæ—¥æœŸ");
 		JLabel jl5=new JLabel("SSN");
-		JLabel jl6=new JLabel("Äê¼¶");
-		//JLabel jl7=new JLabel("ÔºÏµ");
+		JLabel jl6=new JLabel("å¹´çº§");
+		//JLabel jl7=new JLabel("é™¢ç³»");
 		JTextField tf1=new JTextField();
 		JTextField tf2=new JTextField();
 		JTextField tf3=new JTextField();
@@ -98,7 +94,7 @@ public class AddStudent extends JFrame{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				int n = JOptionPane.showConfirmDialog(null, "È·¶¨ÒªÌí¼ÓÂğ?", "ÏûÏ¢¿ò", JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "ç¡®å®šè¦æ·»åŠ å—?", "æ¶ˆæ¯æ¡†", JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					String sid=tf1.getText().trim();
 					String password= tf2.getText().trim();
@@ -116,12 +112,12 @@ public class AddStudent extends JFrame{
 				         System.out.println(success);
 				         if(success==0)
 				         {
-				        	 JOptionPane.showMessageDialog(null, "²Ù×÷Ê§°Ü");
+				        	 JOptionPane.showMessageDialog(null, "æ“ä½œå¤±è´¥");
 				        	 
 				         }
 				         else
 				         {	
-				        	 JOptionPane.showMessageDialog(null, "Ìí¼Ó³É¹¦");
+				        	 JOptionPane.showMessageDialog(null, "æ·»åŠ æˆåŠŸ");
 				         }
 					} catch (IOException e1) {
 						// TODO Auto-generated catch block

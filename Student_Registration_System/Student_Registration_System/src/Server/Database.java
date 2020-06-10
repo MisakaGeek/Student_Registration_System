@@ -8,9 +8,11 @@ import java.sql.Statement;
 
 public class Database {
 	private static String dbOldUrl = "jdbc:mysql://localhost:3306/course_catalog";
-	private static String dbNewUrl = "jdbc:mysql://localhost:3306/administration_system?serverTimezone=UTC";
+	//private static String dbNewUrl = "jdbc:mysql://localhost:3306/administration_system?serverTimezone=UTC";
+	private static String dbNewUrl = "jdbc:mysql://localhost:3306/admininstration_system";
 	private static String dbUser = "root";
-	private static String dbPwd = "aptx4869";
+	//private static String dbPwd = "aptx4869";
+	private static String dbPwd = "root";
 	static {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -21,19 +23,19 @@ public class Database {
 	}
 
 
-	// »ñµÃÒ»¸ö¾ÉÊı¾İ¿âÁ¬½Ó
+	// è·å¾—ä¸€ä¸ªæ—§æ•°æ®åº“è¿æ¥
 	public static Connection getOldConnection() throws SQLException {
-		System.out.println("Á¬½ÓÊı¾İ¿â...");
+		System.out.println("è¿æ¥æ•°æ®åº“...");
 		return DriverManager.getConnection(dbOldUrl, dbUser, dbPwd);
 	}
 
-	// »ñµÃÒ»¸öĞÂÊı¾İ¿âÁ¬½Ó
+	// è·å¾—ä¸€ä¸ªæ–°æ•°æ®åº“è¿æ¥
 	public static Connection getNewConnection() throws SQLException {
-		System.out.println("Á¬½ÓÊı¾İ¿â...");
+		System.out.println("è¿æ¥æ•°æ®åº“...");
 		return DriverManager.getConnection(dbNewUrl, dbUser, dbPwd);
 	}
 
-	// ¹Ø±ÕÊı¾İ¿âÁ¬½Ó
+	// å…³é—­æ•°æ®åº“è¿æ¥
 	public static void freeDB(ResultSet rs, Statement st, Connection conn) throws SQLException {
 
 		if (rs != null)
@@ -42,6 +44,6 @@ public class Database {
 			st.close();
 		if (conn != null)
 			conn.close();
-		System.out.println("¹Ø±ÕÊı¾İ¿â");
+		System.out.println("å…³é—­æ•°æ®åº“");
 	}
 }

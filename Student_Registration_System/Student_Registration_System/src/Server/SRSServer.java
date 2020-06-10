@@ -1,4 +1,3 @@
-
 /*
  * @author 雷浩洁
  * @version 1.0
@@ -12,6 +11,7 @@ import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -28,6 +28,7 @@ public class SRSServer {
 	public ExecutorService exec;
 	public static int isRegistration_time;//当前系统是否处于正在注册的状态下，1为开放注册，0为关闭注册
 	public static int isRegistration;//记录当前有多少人处于选课界面
+	public static List<String> canceled_course=new ArrayList<>();
 	
 	public static void main(String[] args) throws IOException {
 		//创建服务器serversocket对象
@@ -103,6 +104,7 @@ class SingleServer implements Runnable {
     	do {
     		try {
                 request=dis.readUTF();
+                String da[];
                 if((request.toCharArray())[0]=='1') {  //客户端身份为学生
                 	idendity=1;
                 	if(request.toCharArray()[1]=='0') {  //请求登录
@@ -111,7 +113,48 @@ class SingleServer implements Runnable {
                 		String result=student.login(idString, pwString);
                 		dos.writeUTF(result);
                 		dos.flush();
-                	}else if (request.charAt(1) == '8')
+                	}else if(request.toCharArray()[1]=='2') {
+                		if(SRSServer.isRegistration_time == 1) {
+                			SRSServer.isRegistration++; //增加正在注册的人数
+                			dos.writeChars("2");
+                			dos.flush();
+                		}else {
+                			dos.writeChars("1");
+                			dos.flush();
+                		}
+                	}else if(request.toCharArray()[1]=='3') {
+                		String id = dis.readUTF();
+    					student.createSchedule(id, dos);
+                	}else if(request.toCharArray()[1]=='4') {
+                		String id = dis.readUTF();
+    					student.updateSchedule(id, dos);
+                	}else if(request.toCharArray()[1]=='5') {
+                		String id = dis.readUTF();
+    					student.deleteSchedule(id, dos);
+                	}else if(request.toCharArray()[1]=='6') {
+                		String id = dis.readUTF();
+    					ArrayList<String> lessons = new ArrayList<String>();
+    					for(int i=0;i<6;i++) {
+    						String lesson;
+    						lesson = dis.readUTF();
+    						lessons.add(lesson);
+    					}
+    					student.saveSchedule(id, dos, lessons);
+                	}else if(request.toCharArray()[1]=='7') {
+                		String id = dis.readUTF();
+    					ArrayList<String> lessons = new ArrayList<String>();
+    					for(int i=0;i<6;i++) {
+    						String lesson;
+    						lesson = dis.readUTF();
+    						lessons.add(lesson);
+    					}
+    					student.submitSchedule(id, dos, lessons);
+                	}else if(request.toCharArray()[1]=='9') {
+    					String id = dis.readUTF();
+    					student.submitDeleteSchedule(id, dos);
+    				}else if(request.toCharArray()[1]=='a') {
+    					student.backStudRegistration();
+    				}else if (request.charAt(1) == '8')
 						        student.ViewGrades();
                 	//补充：此处添加else if或是改成switch，补充完善学生角色的其他用例
                 }else if(request.toCharArray()[0]=='2') {//客户端身份是教授
@@ -132,7 +175,12 @@ class SingleServer implements Runnable {
                 	//补充：此处添加else if或是改成switch，补充完善教授角色的其他用例
                 }else if(request.toCharArray()[0]=='3') {//客户端身份是注册员
                 	idendity=3;
-			            if(request.toCharArray()[1]=='3')
+                	if(request.toCharArray()[1]=='2') { //关闭注册
+                		String res = register.close_Registration();
+                		dos.writeUTF(res);
+                		dos.flush();
+                	}
+                	else if(request.toCharArray()[1]=='3')
                 	{   
                 	    da=request.split("#");
                 	    register.update(da[1]);
@@ -176,4 +224,3 @@ class SingleServer implements Runnable {
     	}while(!isEnd);
     }
 }
-

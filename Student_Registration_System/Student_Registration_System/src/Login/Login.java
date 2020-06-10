@@ -1,7 +1,7 @@
 /*
- *@author À×ºÆ½à
+ *@author é›·æµ©æ´
  *@version 1.0
- * µÇÂ¼½çÃæ,°üÀ¨×î³õµÄÊ×½çÃæÓëÈıÖÖÉí·İ£¨½ÌÊÚÑ§Éú×¢²áÔ±£©µÇÂ¼ºóµÄÖ÷½çÃæ
+ * ç™»å½•ç•Œé¢,åŒ…æ‹¬æœ€åˆçš„é¦–ç•Œé¢ä¸ä¸‰ç§èº«ä»½ï¼ˆæ•™æˆå­¦ç”Ÿæ³¨å†Œå‘˜ï¼‰ç™»å½•åçš„ä¸»ç•Œé¢
  * */
 package Login;
 import javax.swing.*;
@@ -25,26 +25,26 @@ public class Login {
 
 class Main_Login_GUI extends JFrame implements ActionListener
 {	
-	//GUI½çÃæÏà¹ØÊôĞÔ
-	public int sys_width;//×ÀÃæ³ß´ç
+	//GUIç•Œé¢ç›¸å…³å±æ€§
+	public int sys_width;//æ¡Œé¢å°ºå¯¸
 	public int sys_height;
-	public int windowsWidth;//´°¿Ú³ß´ç
+	public int windowsWidth;//çª—å£å°ºå¯¸
 	public int windowsHeight;
-	public String name;//´æ´¢ÓÃ»§ÃûÓëÃÜÂë
+	public String name;//å­˜å‚¨ç”¨æˆ·åä¸å¯†ç 
 	public String pw;
-	public JLabel title;//»¶Ó­±êÓï
-	public JComboBox<String> jc;//Ñ¡ÔñÉí·İ
+	public JLabel title;//æ¬¢è¿æ ‡è¯­
+	public JComboBox<String> jc;//é€‰æ‹©èº«ä»½
 	public JPanel jp;
 	public JPanel jp2;
 	public JPanel jp3;
-	public JTextField nameField;//ÊäÈëÓÃ»§Ãû
-	public JPasswordField pwField;//ÊäÈëÃÜÂë
+	public JTextField nameField;//è¾“å…¥ç”¨æˆ·å
+	public JPasswordField pwField;//è¾“å…¥å¯†ç 
 	public JLabel nameLabel;
 	public JLabel pwLabel;
 	public JButton jb1;
 	public JButton jb2;
 	
-	//ÍøÂç±à³ÌÏà¹ØÊôĞÔ
+	//ç½‘ç»œç¼–ç¨‹ç›¸å…³å±æ€§
 	public Socket socket;
 	public DataInputStream dis;
 	public DataOutputStream dos;
@@ -53,10 +53,10 @@ class Main_Login_GUI extends JFrame implements ActionListener
 		jp = new JPanel();
 		jp2 = new JPanel();
 		jp3 =  new JPanel();
-		//GUI±êÌâ
-		this.setTitle("Ñ§ÉúÑ¡¿Î¹ÜÀíÏµÍ³");
+		//GUIæ ‡é¢˜
+		this.setTitle("å­¦ç”Ÿé€‰è¯¾ç®¡ç†ç³»ç»Ÿ");
 		
-		//ÉèÖÃ´°¿Ú´óĞ¡
+		//è®¾ç½®çª—å£å¤§å°
 		sys_width = Toolkit.getDefaultToolkit().getScreenSize().width;
 	    sys_height = Toolkit.getDefaultToolkit().getScreenSize().height;
 	    windowsWidth = 350;
@@ -65,20 +65,20 @@ class Main_Login_GUI extends JFrame implements ActionListener
 	    this.setBounds((sys_width- windowsWidth) / 2,
                 (sys_height - windowsHeight) / 2, windowsWidth, windowsHeight);
 	    
-	    //²¼¾Ö
+	    //å¸ƒå±€
 	    this.setLayout(new GridLayout(4,1));
 	    
 	    
-	    //»¶Ó­Óï
-	    title = new JLabel("»¶Ó­Ê¹ÓÃÑ§ÉúÑ¡¿Î¹ÜÀíÏµÍ³",JLabel.CENTER);
+	    //æ¬¢è¿è¯­
+	    title = new JLabel("æ¬¢è¿ä½¿ç”¨å­¦ç”Ÿé€‰è¯¾ç®¡ç†ç³»ç»Ÿ",JLabel.CENTER);
 	    this.add(title);
 	    
 		
-	    //ÊäÈëµÇÂ¼ĞÅÏ¢
+	    //è¾“å…¥ç™»å½•ä¿¡æ¯
 	    jp2.setLayout(new GridLayout(2,2,10,5));
-	    nameLabel = new JLabel("ÓÃ»§Ãû:",JLabel.CENTER);
+	    nameLabel = new JLabel("ç”¨æˆ·å:",JLabel.CENTER);
 	    nameField = new JTextField();
-	    pwLabel = new JLabel("ÃÜÂë:",JLabel.CENTER);
+	    pwLabel = new JLabel("å¯†ç :",JLabel.CENTER);
 	    pwField = new JPasswordField();
 	    jp2.add(nameLabel);
 	    jp2.add(nameField);
@@ -86,18 +86,18 @@ class Main_Login_GUI extends JFrame implements ActionListener
 	    jp2.add(pwField);
 	    this.add(jp2);
 	    
-	    //Ñ¡ÔñÉí·İ
+	    //é€‰æ‹©èº«ä»½
 	    jc = new JComboBox<String>();
-	    jc.addItem("---ÇëÑ¡ÔñÄúµÄÉí·İ---");
-	    jc.addItem("×¢²áÔ±");
-	    jc.addItem("Ñ§Éú");
-	    jc.addItem("½ÌÊÚ");
+	    jc.addItem("---è¯·é€‰æ‹©æ‚¨çš„èº«ä»½---");
+	    jc.addItem("æ³¨å†Œå‘˜");
+	    jc.addItem("å­¦ç”Ÿ");
+	    jc.addItem("æ•™æˆ");
 	    jp.add(jc);
 	    this.add(jp);
 	    
-	    //È·¶¨ÓëÈ¡Ïû°´Å¥
-	    jb1 = new JButton("µÇÂ¼");
-	    jb2 = new JButton("È¡Ïû");
+	    //ç¡®å®šä¸å–æ¶ˆæŒ‰é’®
+	    jb1 = new JButton("ç™»å½•");
+	    jb2 = new JButton("å–æ¶ˆ");
 	    jb1.addActionListener(this);
 	    jb2.addActionListener(this);
 	    jp3.setLayout(new GridLayout(1,2));
@@ -108,7 +108,7 @@ class Main_Login_GUI extends JFrame implements ActionListener
 	    this.setVisible(true);
 		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
-		//´´½¨¿Í»§¶Ësocket£¬Óë·şÎñ¶Ë½øĞĞ¹ıÁ¬½Ó
+		//åˆ›å»ºå®¢æˆ·ç«¯socketï¼Œä¸æœåŠ¡ç«¯è¿›è¡Œè¿‡è¿æ¥
 		try {
 			socket = new Socket("127.0.0.1",8888);
 			dis = new DataInputStream(
@@ -116,10 +116,10 @@ class Main_Login_GUI extends JFrame implements ActionListener
 	        dos = new DataOutputStream(
 	                new BufferedOutputStream(socket.getOutputStream()));
 		} catch (UnknownHostException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e.printStackTrace();
 		}
 		
@@ -128,59 +128,59 @@ class Main_Login_GUI extends JFrame implements ActionListener
 	
 	public void actionPerformed(ActionEvent e) {
 		/*
-		 * ÊÂ¼ş¼àÌı£¬Ö÷½çÃæÖ»ÓĞÒ»ÖÖÊÂ¼ş£ºµÇÂ¼
+		 * äº‹ä»¶ç›‘å¬ï¼Œä¸»ç•Œé¢åªæœ‰ä¸€ç§äº‹ä»¶ï¼šç™»å½•
 		 */
 		String buttonName = e.getActionCommand();
-		if(buttonName.equals("µÇÂ¼")) {
-			//±£´æÊäÈëµÄÉí·İ¡¢ÓÃ»§Ãû¡¢ÃÜÂë
+		if(buttonName.equals("ç™»å½•")) {
+			//ä¿å­˜è¾“å…¥çš„èº«ä»½ã€ç”¨æˆ·åã€å¯†ç 
 			name = new String(nameField.getText());
 			pw = new String(pwField.getPassword());
 			int temp = jc.getSelectedIndex();
-			if(temp==1) {//µ±Ç°ÊÇ×¢²áÔ±
+			if(temp==1) {//å½“å‰æ˜¯æ³¨å†Œå‘˜
 				this.dispose();
 				Registrar_GUI rGui = new Registrar_GUI(socket);
-			}else if (temp==2) {//µ±Ç°ÊÇÑ§Éú
+			}else if (temp==2) {//å½“å‰æ˜¯å­¦ç”Ÿ
 				if(isCorrect(temp)) {
 					this.dispose();
 					Stu_GUI stu_GUI = new Stu_GUI(name,pw,socket);
 				}else {
-					JOptionPane.showMessageDialog(null, "ÊäÈëµÄÓÃ»§Ãû»òÃÜÂëÓĞÎó£¬ÇëÖØĞÂÊäÈë£¡", "´íÎó",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "è¾“å…¥çš„ç”¨æˆ·åæˆ–å¯†ç æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼", "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				}
-			}else if (temp==3) {//µ±Ç°ÊÇ½ÌÊÚ
+			}else if (temp==3) {//å½“å‰æ˜¯æ•™æˆ
 				if(isCorrect(temp)) {
 					this.dispose();
 					Prof_GUI prof_GUI = new Prof_GUI(name,pw,socket);
 				}else {
-					JOptionPane.showMessageDialog(null, "ÊäÈëµÄÓÃ»§Ãû»òÃÜÂëÓĞÎó£¬ÇëÖØĞÂÊäÈë£¡", "´íÎó",JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "è¾“å…¥çš„ç”¨æˆ·åæˆ–å¯†ç æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼", "é”™è¯¯",JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		}
-		else if(buttonName.equals("È¡Ïû")){
+		else if(buttonName.equals("å–æ¶ˆ")){
 			this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		}
 	}
 
 	public boolean isCorrect(int id) {  
 		/*
-		 * Ê×ÏÈÅĞ¶Ïµ÷ÓÃ¸Ãº¯ÊıµÄÊÇÊ²Ã´Éí·İ£ºÑ§Éú»òÕßÀÏÊ¦
-		 * ½«ÓÃ»§ÃûnameÓëÃÜÂëpw·¢ËÍ¸ø¿Í»§¶ËÑéÖ¤ÃÜÂëÊÇ·ñÕıÈ·
+		 * é¦–å…ˆåˆ¤æ–­è°ƒç”¨è¯¥å‡½æ•°çš„æ˜¯ä»€ä¹ˆèº«ä»½ï¼šå­¦ç”Ÿæˆ–è€…è€å¸ˆ
+		 * å°†ç”¨æˆ·ånameä¸å¯†ç pwå‘é€ç»™å®¢æˆ·ç«¯éªŒè¯å¯†ç æ˜¯å¦æ­£ç¡®
 		 */
 		String idString=new String();
-		String flag="0";//ÓÃ¸Ã±äÁ¿±£´æ·µ»ØµÄ½á¹û£¬ÈôÓÃ»§ÃûÃÜÂëÕıÈ·£¬ÔòÎª1£¬·ñÔòÎª0
+		String flag="0";//ç”¨è¯¥å˜é‡ä¿å­˜è¿”å›çš„ç»“æœï¼Œè‹¥ç”¨æˆ·åå¯†ç æ­£ç¡®ï¼Œåˆ™ä¸º1ï¼Œå¦åˆ™ä¸º0
 		if(id==2) {
-			idString = "10";//1´ú±íÑ§Éú£¬0´ú±íÖ´ĞĞµÇÂ¼ÓÃÀı
+			idString = "10";//1ä»£è¡¨å­¦ç”Ÿï¼Œ0ä»£è¡¨æ‰§è¡Œç™»å½•ç”¨ä¾‹
 		}else if(id==3){
-			idString = "20";//2´ú±í½ÌÊÚ£¬0´ú±íÖ´ĞĞµÇÂ¼ÓÃÀı
+			idString = "20";//2ä»£è¡¨æ•™æˆï¼Œ0ä»£è¡¨æ‰§è¡Œç™»å½•ç”¨ä¾‹
 		}
 		
 		try {			
-			dos.writeUTF(idString);//ÏÈ·¢ËÍÇëÇóÂë£¬¸æËß·şÎñ¶ËÖ´ĞĞÏàÓ¦¹¦ÄÜ
-			dos.writeUTF(name);//½«Ñ§ºÅÓëÃÜÂë·¢¸ø·şÎñÆ÷
+			dos.writeUTF(idString);//å…ˆå‘é€è¯·æ±‚ç ï¼Œå‘Šè¯‰æœåŠ¡ç«¯æ‰§è¡Œç›¸åº”åŠŸèƒ½
+			dos.writeUTF(name);//å°†å­¦å·ä¸å¯†ç å‘ç»™æœåŠ¡å™¨
 			dos.writeUTF(pw);
 			dos.flush();
 			flag = dis.readUTF();
 		} catch (IOException e1) {
-			// TODO ×Ô¶¯Éú³ÉµÄ catch ¿é
+			// TODO è‡ªåŠ¨ç”Ÿæˆçš„ catch å—
 			e1.printStackTrace();
 		}
 		if(flag.equals("1")) return true;
@@ -188,12 +188,3 @@ class Main_Login_GUI extends JFrame implements ActionListener
 	}
 
 }
-
-
-
-
-
-
-
-
-

@@ -114,7 +114,20 @@ public class Registrar_GUI extends JFrame implements ActionListener{
 			}
 			
 		}else if(e.getSource()==jb2){  //关闭注册按钮
-			//补充：执行关闭注册用例的功能，重点编写
+			String res="false";
+			try {
+				dos.writeUTF("32");
+				dos.flush();
+				res=dis.readUTF();
+			} catch (IOException e1) {
+				// TODO 自动生成的 catch 块
+				e1.printStackTrace();
+			}
+			if(res.contentEquals("true")) {
+				JOptionPane.showMessageDialog(null, "成功关闭注册系统");
+			}else if(res.contentEquals("notEmpty")) {
+				JOptionPane.showMessageDialog(null, "目前尚有人在选课，关闭失败！", "关闭失败 ", JOptionPane.ERROR_MESSAGE);
+			}
 		}else if (e.getSource()==jb3) {  //维护学生信息
 			//补充：执行维护学生信息用例
 			MaintainStudent mp=new MaintainStudent(socket);

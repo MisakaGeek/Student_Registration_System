@@ -1,8 +1,8 @@
-
 /*
- * Ñ§Éú²é¿´³É¼¨½çÃæ
- * Ê¹ÓÃsocket¶ÔÏóºÍ·şÎñÆ÷ÉÏµÄÑ§ÉúÀàº¯ÊıÍ¨ĞÅ
+ * å­¦ç”ŸæŸ¥çœ‹æˆç»©ç•Œé¢
+ * ä½¿ç”¨socketå¯¹è±¡å’ŒæœåŠ¡å™¨ä¸Šçš„å­¦ç”Ÿç±»å‡½æ•°é€šä¿¡
  */
+package Login;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -40,7 +40,7 @@ class ViewReportCardUI extends JFrame implements ActionListener {
 	private JScrollPane sp1;
 	private JTable table1;
 	private JButton button1, button2;
-	private String semester = "-----ÇëÑ¡Ôñ-----"; // Ñ§ÉúÑ¡ÖĞ²éÑ¯µÄÑ§ÆÚ
+	private String semester = "-----è¯·é€‰æ‹©-----"; // å­¦ç”Ÿé€‰ä¸­æŸ¥è¯¢çš„å­¦æœŸ
 	private Vector<Vector> rowData;
 	Vector columnNames;
 	Socket socket;
@@ -65,56 +65,56 @@ class ViewReportCardUI extends JFrame implements ActionListener {
 		this.setLocation(0, 0);
 		this.setLocationRelativeTo(null);
 		setLayout(null);
-		label1 = new JLabel("³É¼¨²éÑ¯");
-		label2 = new JLabel("Ñ§ÆÚ£º");
-		label3 = new JLabel("Ñ§ÆÚ³É¼¨");
+		label1 = new JLabel("æˆç»©æŸ¥è¯¢");
+		label2 = new JLabel("å­¦æœŸï¼š");
+		label3 = new JLabel("å­¦æœŸæˆç»©");
 		label1.setBounds(30, -30, 200, 150);
 		label2.setBounds(60, 80, 80, 50);
 		label3.setBounds(width / 2 - 75, 140, 160, 50);
-		Font font1 = new Font("ºÚÌå", Font.PLAIN, 30);
-		Font font2 = new Font("ºÚÌå", Font.PLAIN, 20);
-		Font font3 = new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 16);
-		Font font4 = new Font("ºÚÌå", Font.PLAIN, 23);
+		Font font1 = new Font("é»‘ä½“", Font.PLAIN, 30);
+		Font font2 = new Font("é»‘ä½“", Font.PLAIN, 20);
+		Font font3 = new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 16);
+		Font font4 = new Font("é»‘ä½“", Font.PLAIN, 23);
 		label1.setFont(font1);
 		label2.setFont(font2);
 		label3.setFont(font4);
-		button1 = new JButton("·µ»Ø");
+		button1 = new JButton("è¿”å›");
 		button1.setBounds(width - 150, 40, 100, 40);
 		button1.setFont(font2);
 		button1.setForeground(Color.white);
 		button1.setBackground(new Color(74, 112, 139));
-		button2 = new JButton("²éÑ¯");
+		button2 = new JButton("æŸ¥è¯¢");
 		button2.setBounds(330, 85, 80, 40);
 		button2.setFont(font3);
 		cmb1 = new JComboBox();
-		cmb1.addItem("-----ÇëÑ¡Ôñ-----");
+		cmb1.addItem("-----è¯·é€‰æ‹©-----");
 		cmb1.setBounds(130, 85, 170, 40);
 		cmb1.setFont(font3);
 
 		Vector<String> semester = new Vector<String>();
-		semester.add("2020ÄêµÚ¶şÑ§ÆÚ");
-		semester.add("2020ÄêµÚÒ»Ñ§ÆÚ");
-		semester.add("2019ÄêµÚ¶şÑ§ÆÚ");
-		semester.add("2019ÄêµÚÒ»Ñ§ÆÚ");
+		semester.add("2020å¹´ç¬¬äºŒå­¦æœŸ");
+		semester.add("2020å¹´ç¬¬ä¸€å­¦æœŸ");
+		semester.add("2019å¹´ç¬¬äºŒå­¦æœŸ");
+		semester.add("2019å¹´ç¬¬ä¸€å­¦æœŸ");
 		for (int i = 0; i < semester.size(); i++)
 			cmb1.addItem(semester.get(i));
 
 		rowData = new Vector<Vector>();
 		columnNames = new Vector();
-		columnNames.add("Ñ§ÆÚ");
-		columnNames.add("Ñ¡¿Î¿ÎºÅ");
-		columnNames.add("¿Î³ÌÃû³Æ");
-		columnNames.add("Ñ§·Ö");
-		columnNames.add("³É¼¨");
+		columnNames.add("å­¦æœŸ");
+		columnNames.add("é€‰è¯¾è¯¾å·");
+		columnNames.add("è¯¾ç¨‹åç§°");
+		columnNames.add("å­¦åˆ†");
+		columnNames.add("æˆç»©");
 
-		table1 = new JTable(rowData, columnNames); // ´´½¨Ö¸¶¨ÁĞÃûºÍÊı¾İµÄ±í¸ñ
-		sp1 = new JScrollPane(table1); // ´´½¨ÏÔÊ¾±í¸ñµÄ¹ö¶¯Ãæ°å
+		table1 = new JTable(rowData, columnNames); // åˆ›å»ºæŒ‡å®šåˆ—åå’Œæ•°æ®çš„è¡¨æ ¼
+		sp1 = new JScrollPane(table1); // åˆ›å»ºæ˜¾ç¤ºè¡¨æ ¼çš„æ»šåŠ¨é¢æ¿
 		sp1.setBounds(60, 195, width - 140, height - 260);
 		JTableHeader tableHeader = table1.getTableHeader();
 		tableHeader.setFont(font2);
 		table1.setRowHeight(30);
-		table1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 15));
-		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();// ÉèÖÃtableÄÚÈİ¾ÓÖĞ
+		table1.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();// è®¾ç½®tableå†…å®¹å±…ä¸­
 		tcr.setHorizontalAlignment(JLabel.CENTER);
 		table1.setDefaultRenderer(Object.class, tcr);
 
@@ -132,14 +132,14 @@ class ViewReportCardUI extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == button1) {
-			// ÏÈÌø×ªÉÏÒ»¼¶½çÃæ£¡£¡
+			// å…ˆè·³è½¬ä¸Šä¸€çº§ç•Œé¢ï¼ï¼
 			Stu_GUI ui = new Stu_GUI(user_id, password, socket);
 			dispose();
 		} else if (e.getSource() == button2) {
 			semester = cmb1.getSelectedItem().toString();
 			rowData.clear();
 			try {
-				dos.writeUTF("18");// ¶ÔÓ¦·şÎñÆ÷Ñ§ÉúÀàViewGrades()
+				dos.writeUTF("18");// å¯¹åº”æœåŠ¡å™¨å­¦ç”Ÿç±»ViewGrades()
 				dos.writeUTF(semester);
 				dos.flush();
 				String str = dis.readUTF();

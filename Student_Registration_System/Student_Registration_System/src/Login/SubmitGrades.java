@@ -170,6 +170,7 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 							return;
 						}
 					dos.writeUTF(grade); // 成绩
+
 					dos.flush();
 				}
 				dos.writeUTF("end");
