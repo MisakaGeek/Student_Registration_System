@@ -11,6 +11,7 @@ import java.io.*;
 import java.net.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -27,6 +28,7 @@ public class SRSServer {
 	public ExecutorService exec;
 	public static int isRegistration_time;//当前系统是否处于正在注册的状态下，1为开放注册，0为关闭注册
 	public static int isRegistration;//记录当前有多少人处于选课界面
+	public static List<String> canceled_course=new ArrayList<>();
 	
 	public static void main(String[] args) throws IOException {
 		//创建服务器serversocket对象
@@ -173,7 +175,12 @@ class SingleServer implements Runnable {
                 	//补充：此处添加else if或是改成switch，补充完善教授角色的其他用例
                 }else if(request.toCharArray()[0]=='3') {//客户端身份是注册员
                 	idendity=3;
-			            if(request.toCharArray()[1]=='3')
+                	if(request.toCharArray()[1]=='2') { //关闭注册
+                		String res = register.close_Registration();
+                		dos.writeUTF(res);
+                		dos.flush();
+                	}
+                	else if(request.toCharArray()[1]=='3')
                 	{   
                 	    da=request.split("#");
                 	    register.update(da[1]);
