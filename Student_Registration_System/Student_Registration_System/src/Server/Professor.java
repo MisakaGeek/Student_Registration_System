@@ -5,29 +5,11 @@ import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
 import java.net.Socket;
-import java.net.URL;
-import java.sql.Array;
-import java.sql.Blob;
-import java.sql.Clob;
 import java.sql.Connection;
-import java.sql.Date;
-import java.sql.NClob;
-import java.sql.ParameterMetaData;
 import java.sql.PreparedStatement;
-import java.sql.Ref;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.RowId;
 import java.sql.SQLException;
-import java.sql.SQLWarning;
-import java.sql.SQLXML;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Calendar;
 
 public class Professor {
 	String id;
@@ -56,14 +38,12 @@ public class Professor {
 		department = null;
 		try {
 
-			this.dis = new DataInputStream(
-			        new BufferedInputStream(socket.getInputStream()));
-			this.dos = new DataOutputStream(
-	                new BufferedOutputStream(socket.getOutputStream()));//输出流
+			this.dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+			this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));// 输出流
 			conn = Database.getNewConnection();
-			pst=null;
-			rs=null;
-		
+			pst = null;
+			rs = null;
+
 		} catch (SQLException | IOException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -79,7 +59,6 @@ public class Professor {
 
 		this.id = id;
 		this.password = pw;
-
 		String sql;
 		sql = "select pid,password from professor where pid=?";
 		pst = conn.prepareStatement(sql);
@@ -104,7 +83,6 @@ public class Professor {
 	public void GetCourse() throws IOException { // 获取指定学期的课程
 		String semester = dis.readUTF();
 		try {
-			Connection conn = Database.getNewConnection();
 			String sql;
 			PreparedStatement pst;
 			if (semester.equals("-----请选择-----")) { // 没有指定学期时，默认全部学期
@@ -124,7 +102,6 @@ public class Professor {
 			}
 			dos.writeUTF("end");
 			dos.flush();
-			Database.freeDB(rs, pst, conn);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -135,7 +112,6 @@ public class Professor {
 		String semester = dis.readUTF();
 		String course = dis.readUTF();
 		try {
-			Connection conn = Database.getNewConnection();
 			String sql;
 			PreparedStatement pst;
 			if (course.equals("-----请选择-----")) {
@@ -179,7 +155,6 @@ public class Professor {
 
 	public void SubmitGrades() throws IOException, SQLException { // 提交学生成绩
 		String str = dis.readUTF();
-		Connection conn = Database.getNewConnection();
 		PreparedStatement pst = null;
 		int rs = 0;
 		String sql;
@@ -188,7 +163,11 @@ public class Professor {
 			str = dis.readUTF();
 			String course = str;
 			str = dis.readUTF();
-			int grade = Integer.valueOf(str);
+			int grade = 0;
+			if (str.equals("end")) // 成绩格式有误，中断传输
+				return;
+			if (!str.equals(""))
+				grade = Integer.valueOf(str);
 			str = dis.readUTF();
 			sql = "Update grade set grade= ? where sid = ? and cname = ? ";
 			pst = conn.prepareStatement(sql);
@@ -197,13 +176,16 @@ public class Professor {
 			pst.setString(3, course);
 			rs = pst.executeUpdate();
 		}
-		Database.freeDB(null, pst, conn);
 	}
 
 	public void close() {
 		try {
-			if(rs!=null) {rs.close();}
-			if(pst!=null) {pst.close();}
+			if (rs != null) {
+				rs.close();
+			}
+			if (pst != null) {
+				pst.close();
+			}
 			conn.close();
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块

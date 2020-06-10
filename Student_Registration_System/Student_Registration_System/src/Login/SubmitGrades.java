@@ -3,6 +3,7 @@
  * 使用socket对象和服务器上的Professor类函数通信
  */
 package Login;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -22,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -159,7 +161,16 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 				for (int i = 0; i < rowData.size(); i++) {
 					dos.writeUTF((String) rowData.get(i).get(0)); // 学号
 					dos.writeUTF((String) rowData.get(i).get(3)); // 课程名称
-					dos.writeUTF((String) rowData.get(i).get(4)); // 成绩
+					String grade = (String) rowData.get(i).get(4);
+					for (int j = 0; j < grade.length(); j++)
+						if (!Character.isDigit(grade.charAt(j))) {
+							JOptionPane.showMessageDialog(null, "成绩输入有误，请重新输入！");
+							dos.writeUTF("end");
+							dos.flush();
+							return;
+						}
+					dos.writeUTF(grade); // 成绩
+
 					dos.flush();
 				}
 				dos.writeUTF("end");

@@ -33,21 +33,19 @@ public class Student {
 	public Student(Socket socket) {
 		id = null;
 
-		password=null;
-		name=null;
-		birthday=null;
-		SSN=null;
-		status=null;
-		graduation_date=null;
-		this.socket=socket;
-    	try {
-			this.dis = new DataInputStream(
-			        new BufferedInputStream(socket.getInputStream()));
-			this.dos = new DataOutputStream(
-	                new BufferedOutputStream(socket.getOutputStream()));//输出流
+		password = null;
+		name = null;
+		birthday = null;
+		SSN = null;
+		status = null;
+		graduation_date = null;
+		this.socket = socket;
+		try {
+			this.dis = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+			this.dos = new DataOutputStream(new BufferedOutputStream(socket.getOutputStream()));// 输出流
 			this.conn = Database.getNewConnection();
-			this.pst=null;
-			this.rs=null;
+			this.pst = null;
+			this.rs = null;
 		} catch (IOException | SQLException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -55,16 +53,14 @@ public class Student {
 	}
 
 	public String login(String id, String pw) throws SQLException {
-		
 
 		this.id = id;
 		this.password = pw;
-    /*
-		 * 当服务器接收到学生客户端发来的登录请求后，创建学生对象并执行此方法
-		 * 1.访问数据库，对id与pw进行检索，若检索不到或不匹配，报错，返回0
+		/*
+		 * 当服务器接收到学生客户端发来的登录请求后，创建学生对象并执行此方法 1.访问数据库，对id与pw进行检索，若检索不到或不匹配，报错，返回0
 		 * 2.若匹配，则检索数据库该学生的信息，存放到本对象中，并返回1表示登录成功。
 		 */
-		//补充：对数据库进行检索
+		// 补充：对数据库进行检索
 		String sql;
 		sql = "select sid,password from student where sid=?";
 		pst = conn.prepareStatement(sql);
@@ -79,6 +75,7 @@ public class Student {
 		if(id.equals(testidString)&&pw.equals(testpwString)) {flag=true;}
 		else {flag=false;}
 		if(flag) {
+
 			return "1";
 		} else {
 			return "0";
@@ -136,6 +133,7 @@ public class Student {
 			e.printStackTrace();
 		}
 	}
+
 	void updateSchedule(String id, DataOutputStream dos) {
 		try {
 			//Connection conn = Database.getNewConnection();
@@ -509,11 +507,9 @@ public class Student {
 	public void ViewGrades() throws IOException { 
 		String semester = dis.readUTF();
 		try {
-			
-			Connection conn = Database.getNewConnection();
 			String sql;
 			PreparedStatement pst;
-			if (semester.equals("-----请选择-----")) { 
+			if (semester.equals("-----请选择-----")) {
 				sql = "select semester,cid,cname,credit,grade " + "from grade " + "where sid = ? ";
 				pst = conn.prepareStatement(sql);
 				pst.setString(1, id);
@@ -534,7 +530,6 @@ public class Student {
 			}
 			dos.writeUTF("end");
 			dos.flush();
-			Database.freeDB(null, pst, conn);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -543,8 +538,12 @@ public class Student {
 
 	public void close() {
 		try {
-			if(rs!=null) {rs.close();}
-			if(pst!=null) {pst.close();}
+			if (rs != null) {
+				rs.close();
+			}
+			if (pst != null) {
+				pst.close();
+			}
 			conn.close();
 		} catch (SQLException e) {
 			// TODO 自动生成的 catch 块
@@ -556,9 +555,10 @@ public class Student {
 
 class Schdule {
 	String stu_id;
-	ArrayList<String>main_lesson;
-	ArrayList<String>alternate_lesson;
-	int status;//当前课表的提交状态，0未提交，1已保存，2已提交
+	ArrayList<String> main_lesson;
+	ArrayList<String> alternate_lesson;
+	int status;// 当前课表的提交状态，0未提交，1已保存，2已提交
+
 	public Schdule() {
 		stu_id = null;
 		main_lesson = new ArrayList<String>(4);
