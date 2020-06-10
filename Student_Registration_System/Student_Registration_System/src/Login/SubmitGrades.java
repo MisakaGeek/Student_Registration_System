@@ -1,8 +1,9 @@
-
 /*
- * ½ÌÊÚÌá½»³É¼¨½çÃæ
- * Ê¹ÓÃsocket¶ÔÏóºÍ·şÎñÆ÷ÉÏµÄProfessorÀàº¯ÊıÍ¨ĞÅ
+ * æ•™æˆæäº¤æˆç»©ç•Œé¢
+ * ä½¿ç”¨socketå¯¹è±¡å’ŒæœåŠ¡å™¨ä¸Šçš„Professorç±»å‡½æ•°é€šä¿¡
  */
+package Login;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -22,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -43,10 +45,10 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 	private JScrollPane sp1;
 	private JTable table1;
 	private JButton button1, button2, button3;
-	private Vector<Vector> rowData;// ³É¼¨±íÊı¾İ
-	private Vector columnNames; // ³É¼¨±íÍ·
-	private String semester = "-----ÇëÑ¡Ôñ-----";// ½ÌÊÚÑ¡ÖĞµÄÑ§ÆÚ
-	private String course = "-----ÇëÑ¡Ôñ-----"; // ½ÌÊÚÑ¡ÖĞµÄ¿Î³Ì
+	private Vector<Vector> rowData;// æˆç»©è¡¨æ•°æ®
+	private Vector columnNames; // æˆç»©è¡¨å¤´
+	private String semester = "-----è¯·é€‰æ‹©-----";// æ•™æˆé€‰ä¸­çš„å­¦æœŸ
+	private String course = "-----è¯·é€‰æ‹©-----"; // æ•™æˆé€‰ä¸­çš„è¯¾ç¨‹
 	Socket socket;
 	DataInputStream dis;
 	DataOutputStream dos;
@@ -69,68 +71,68 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 		this.setLocation(0, 0);
 		this.setLocationRelativeTo(null);
 		setLayout(null);
-		label1 = new JLabel("³É¼¨Ìá½»");
-		label2 = new JLabel("Ñ§ÆÚ£º");
-		label3 = new JLabel("¿Î³Ì£º");
-		label4 = new JLabel("Ñ§Éú³É¼¨");
+		label1 = new JLabel("æˆç»©æäº¤");
+		label2 = new JLabel("å­¦æœŸï¼š");
+		label3 = new JLabel("è¯¾ç¨‹ï¼š");
+		label4 = new JLabel("å­¦ç”Ÿæˆç»©");
 		label1.setBounds(30, -30, 200, 150);
 		label2.setBounds(50, 80, 80, 50);
 		label3.setBounds(300, 80, 80, 50);
 		label4.setBounds(width / 2 - 75, 140, 160, 50);
-		Font font1 = new Font("ºÚÌå", Font.PLAIN, 30);
-		Font font2 = new Font("ºÚÌå", Font.PLAIN, 20);
-		Font font3 = new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 16);
-		Font font4 = new Font("ºÚÌå", Font.PLAIN, 23);
+		Font font1 = new Font("é»‘ä½“", Font.PLAIN, 30);
+		Font font2 = new Font("é»‘ä½“", Font.PLAIN, 20);
+		Font font3 = new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 16);
+		Font font4 = new Font("é»‘ä½“", Font.PLAIN, 23);
 		label1.setFont(font1);
 		label2.setFont(font2);
 		label3.setFont(font2);
 		label4.setFont(font4);
-		button1 = new JButton("Ìá½»");
+		button1 = new JButton("æäº¤");
 		button1.setBounds(width - 150, 45, 100, 40);
 		button1.setFont(font2);
 		button1.setForeground(Color.white);
 		button1.setBackground(new Color(178, 34, 34));
-		button2 = new JButton("·µ»Ø");
+		button2 = new JButton("è¿”å›");
 		button2.setBounds(width - 150, 100, 100, 40);
 		button2.setFont(font2);
 		button2.setForeground(Color.white);
 		button2.setBackground(new Color(74, 112, 139));
-		button3 = new JButton("²éÑ¯");
+		button3 = new JButton("æŸ¥è¯¢");
 		button3.setBounds(560, 85, 80, 40);
 		button3.setFont(font3);
 		cmb1 = new JComboBox();
-		cmb1.addItem("-----ÇëÑ¡Ôñ-----");
+		cmb1.addItem("-----è¯·é€‰æ‹©-----");
 		cmb1.setBounds(110, 85, 170, 40);
 		cmb1.setFont(font3);
-		// »ñÈ¡¸Ã½ÌÊÚÒÑÊÚ¿Î³ÌÑ§ÆÚĞÅÏ¢,Êµ¼ÊÓ¦´ÓÊı¾İ¿â·ÃÎÊ£¡£¡
+		// è·å–è¯¥æ•™æˆå·²æˆè¯¾ç¨‹å­¦æœŸä¿¡æ¯,å®é™…åº”ä»æ•°æ®åº“è®¿é—®ï¼ï¼
 		Vector<String> semester = new Vector<String>();
-		semester.add("2020ÄêµÚ¶şÑ§ÆÚ");
-		semester.add("2020ÄêµÚÒ»Ñ§ÆÚ");
-		semester.add("2019ÄêµÚ¶şÑ§ÆÚ");
-		semester.add("2019ÄêµÚÒ»Ñ§ÆÚ");
+		semester.add("2020å¹´ç¬¬äºŒå­¦æœŸ");
+		semester.add("2020å¹´ç¬¬ä¸€å­¦æœŸ");
+		semester.add("2019å¹´ç¬¬äºŒå­¦æœŸ");
+		semester.add("2019å¹´ç¬¬ä¸€å­¦æœŸ");
 		for (int i = 0; i < semester.size(); i++)
 			cmb1.addItem(semester.get(i));
 		cmb2 = new JComboBox();
-		cmb2.addItem("-----ÇëÑ¡Ôñ-----");
+		cmb2.addItem("-----è¯·é€‰æ‹©-----");
 		cmb2.setBounds(360, 85, 170, 40);
 		cmb2.setFont(font3);
 
 		rowData = new Vector<Vector>();
 		columnNames = new Vector<String>();
-		columnNames.add("Ñ§ºÅ");
-		columnNames.add("Ñ§ÉúĞÕÃû");
-		columnNames.add("Ñ§ÆÚ");
-		columnNames.add("¿Î³ÌÃû³Æ");
-		columnNames.add("³É¼¨");
+		columnNames.add("å­¦å·");
+		columnNames.add("å­¦ç”Ÿå§“å");
+		columnNames.add("å­¦æœŸ");
+		columnNames.add("è¯¾ç¨‹åç§°");
+		columnNames.add("æˆç»©");
 
-		table1 = new JTable(rowData, columnNames); // ´´½¨Ö¸¶¨ÁĞÃûºÍÊı¾İµÄ±í¸ñ
-		sp1 = new JScrollPane(table1); // ´´½¨ÏÔÊ¾±í¸ñµÄ¹ö¶¯Ãæ°å
+		table1 = new JTable(rowData, columnNames); // åˆ›å»ºæŒ‡å®šåˆ—åå’Œæ•°æ®çš„è¡¨æ ¼
+		sp1 = new JScrollPane(table1); // åˆ›å»ºæ˜¾ç¤ºè¡¨æ ¼çš„æ»šåŠ¨é¢æ¿
 		sp1.setBounds(60, 195, width - 140, height - 260);
 		JTableHeader tableHeader = table1.getTableHeader();
 		tableHeader.setFont(font2);
 		table1.setRowHeight(30);
-		table1.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 15));
-		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();// ÉèÖÃtableÄÚÈİ¾ÓÖĞ
+		table1.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 15));
+		DefaultTableCellRenderer tcr = new DefaultTableCellRenderer();// è®¾ç½®tableå†…å®¹å±…ä¸­
 		tcr.setHorizontalAlignment(JLabel.CENTER);
 		table1.setDefaultRenderer(Object.class, tcr);
 
@@ -152,14 +154,22 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == button1) // Ìá½»Êı¾İ¿â
+		if (e.getSource() == button1) // æäº¤æ•°æ®åº“
 		{
 			try {
-				dos.writeUTF("27"); // ¶ÔÓ¦·şÎñÀàSumbitGrades()
+				dos.writeUTF("27"); // å¯¹åº”æœåŠ¡ç±»SumbitGrades()
 				for (int i = 0; i < rowData.size(); i++) {
-					dos.writeUTF((String) rowData.get(i).get(0)); // Ñ§ºÅ
-					dos.writeUTF((String) rowData.get(i).get(3)); // ¿Î³ÌÃû³Æ
-					dos.writeUTF((String) rowData.get(i).get(4)); // ³É¼¨
+					dos.writeUTF((String) rowData.get(i).get(0)); // å­¦å·
+					dos.writeUTF((String) rowData.get(i).get(3)); // è¯¾ç¨‹åç§°
+					String grade = (String) rowData.get(i).get(4);
+					for (int j = 0; j < grade.length(); j++)
+						if (!Character.isDigit(grade.charAt(j))) {
+							JOptionPane.showMessageDialog(null, "æˆç»©è¾“å…¥æœ‰è¯¯ï¼Œè¯·é‡æ–°è¾“å…¥ï¼");
+							dos.writeUTF("end");
+							dos.flush();
+							return;
+						}
+					dos.writeUTF(grade); // æˆç»©
 					dos.flush();
 				}
 				dos.writeUTF("end");
@@ -169,16 +179,16 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 				e1.printStackTrace();
 			}
 		} else if (e.getSource() == button2) {
-			// ÏÈ·µ»Øµ½ÉÏÒ»¼¶½çÃæ£¡£¡
+			// å…ˆè¿”å›åˆ°ä¸Šä¸€çº§ç•Œé¢ï¼ï¼
 
 			Prof_GUI ui = new Prof_GUI(user_id, password, socket);
 			dispose();
 		} else if (e.getSource() == button3) {
 			course = cmb2.getSelectedItem().toString();
 			rowData.clear();
-			// ·ÃÎÊÊı¾İ¿â»ñµÃÑ§ÉúĞÅÏ¢£¡£¡
+			// è®¿é—®æ•°æ®åº“è·å¾—å­¦ç”Ÿä¿¡æ¯ï¼ï¼
 			try {
-				dos.writeUTF("26");// ¶ÔÓ¦·şÎñÆ÷½ÌÊÚÀàGetGrades()
+				dos.writeUTF("26");// å¯¹åº”æœåŠ¡å™¨æ•™æˆç±»GetGrades()
 				dos.writeUTF(semester);
 				dos.writeUTF(course);
 				dos.flush();
@@ -195,16 +205,16 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			// ¶¯Ì¬µØÏòtableÌí¼ÓÊı¾İ
+			// åŠ¨æ€åœ°å‘tableæ·»åŠ æ•°æ®
 			DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
 			table1.setModel(model);
 		} else if (e.getSource() == cmb1) {
-			// Í¨¹ıÑ¡¶¨µÄsemester´ÓÊı¾İ»ñÈ¡¸Ã½ÌÊÚµÄ¿Î³Ì£¡£¡
+			// é€šè¿‡é€‰å®šçš„semesterä»æ•°æ®è·å–è¯¥æ•™æˆçš„è¯¾ç¨‹ï¼ï¼
 			semester = cmb1.getSelectedItem().toString();
 			Vector<String> course = new Vector<String>();
-			course.add("-----ÇëÑ¡Ôñ-----");
+			course.add("-----è¯·é€‰æ‹©-----");
 			try {
-				dos.writeUTF("25");// ¶ÔÓ¦·şÎñ¶Ë½ÌÊÚÀàGetCourse()
+				dos.writeUTF("25");// å¯¹åº”æœåŠ¡ç«¯æ•™æˆç±»GetCourse()
 				dos.writeUTF(semester);
 				dos.flush();
 				String str = dis.readUTF();
@@ -216,7 +226,7 @@ class SubmitGradesUI extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			// ¶¯Ì¬µØÏòComboBoxÌí¼ÓÊı¾İ
+			// åŠ¨æ€åœ°å‘ComboBoxæ·»åŠ æ•°æ®
 			ComboBoxModel model = new DefaultComboBoxModel(course);
 			cmb2.setModel(model);
 		}
