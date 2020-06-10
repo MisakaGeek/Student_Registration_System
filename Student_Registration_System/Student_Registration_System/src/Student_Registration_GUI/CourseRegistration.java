@@ -26,6 +26,9 @@ public class CourseRegistration {
 	private static int port = 8888; //服务器端口
 	private static String host = "localhost";
 	
+	String getStudentId() {
+		return student.user_id;
+	}
 	/*
 	 * 设置studnet的schedule，临时的
 	 */

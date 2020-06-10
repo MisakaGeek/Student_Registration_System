@@ -278,7 +278,12 @@ public class Student {
 					pst2.setString(1, lesson);
 					rs = pst2.executeQuery();
 					rs.next();
-					pst.setString(i+2, rs.getString("cid"));
+					String cid = rs.getString("cid");
+					if(!cid.equals("")) {
+						pst.setString(i+2, cid);
+					}else {
+						pst.setString(i+2, null);
+					}
 					pst2.close();
 				}else {
 					pst.setString(i+2, null);
