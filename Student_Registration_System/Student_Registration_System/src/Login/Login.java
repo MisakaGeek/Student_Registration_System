@@ -148,6 +148,20 @@ class Main_Login_GUI extends JFrame implements ActionListener
 				}
 			}else if (temp==3) {//当前是教授
 				if(isCorrect(temp)) {
+					try {//发送2z代码，查询是否有课程被取消，返回有几门课程即可
+						dos.writeUTF("2z");
+						dos.flush();
+						dos.writeUTF(name);//传pid用于检索
+						dos.flush();
+						String canselcourse=dis.readUTF();//看返回的是否为空决定课程是否被取消
+						if(canselcourse.equals("没有取消的课程")==false)//课程被取消
+						{
+							JOptionPane.showMessageDialog(null,canselcourse , "提示",JOptionPane.WARNING_MESSAGE);
+						}
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					this.dispose();
 					Prof_GUI prof_GUI = new Prof_GUI(name,pw,socket);
 				}else {
