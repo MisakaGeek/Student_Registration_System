@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
-import Login.ShowCourseeqGUI.windowlistener;
+//import Login.ShowCourseeqGUI.windowlistener;
 
 public class Prof_GUI extends JFrame implements ActionListener{
 	public int sys_width;
@@ -198,8 +198,8 @@ public class Prof_GUI extends JFrame implements ActionListener{
 					for(int j=0;j<i*4;j++)
 						System.out.println(pretaughttable[j]);
 					
-					System.out.println("向服务器发送26代码");
-					dos.writeUTF("26");//向服务器发送26代码，让服务器调用professor的selectedCourse（String pid）函数查找已经选择过的课程
+					System.out.println("向服务器发送2b代码");
+					dos.writeUTF("2b");//向服务器发送2b代码，让服务器调用professor的selectedCourse（String pid）函数查找已经选择过的课程
 					dos.flush();
 					dos.writeUTF(user_id);//向服务器发送pid用作上述函数的参数
 					dos.flush();
