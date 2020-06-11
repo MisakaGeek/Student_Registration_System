@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
@@ -26,6 +28,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+
+import Login.NotRegisterTimeShowCourseGUI.windowlistener;
 
 
 public class ConflictCourseGUI extends JDialog implements ActionListener{//显示冲突课程并可进行进一步的操作
@@ -94,7 +98,7 @@ public class ConflictCourseGUI extends JDialog implements ActionListener{//显�
         jTable.setRowHeight(30);// 设置表格行宽
         jTable.setFont(new Font("楷体", Font.PLAIN, 18));// 设置表格字体
         jTable.setSelectionForeground(Color.RED);//选中的行显示红色
-        
+        jTable.setEnabled(false);
         label2=new JLabel("您可以进行以下操作：");
 		label2.setFont(new Font("楷体", Font.PLAIN, 18));
 		label2.setBounds(320,250,300,20);
@@ -122,9 +126,11 @@ public class ConflictCourseGUI extends JDialog implements ActionListener{//显�
 			System.out.println("按下退课按钮");
 			//判断要退的课在第三个表格的第几行
 			int row;
-			System.out.println("已选择课程表格有几行："+jTable2.getRowCount());
-			for(row=1;row<jTable2.getRowCount();row++)
+			System.out.println("已选择课程表格有几行（不算表头）："+jTable2.getRowCount());
+			
+			for(row=0;row<jTable2.getRowCount();row++)//不算表头，第一行为0行
 			{
+				
 				if(jTable2.getValueAt(row, 0).equals(conflicttable[4]))//如果找到了就退出循环，row中就是要找的行
 					break;
 			}
